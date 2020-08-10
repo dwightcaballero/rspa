@@ -40,9 +40,10 @@
                     </Grid.ColumnDefinitions>
 
                     <Frame BorderColor="Black" Padding="5">
-                        <Image Aspect="AspectFill" Grid.Row="0" Grid.Column="0" BackgroundColor="LightGreen"></Image>
+                        <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Row="0" Grid.Column="0" BackgroundColor="LightGreen"></Image>
                     </Frame>
-                    <Button x:Name="btnImage" Text="Select Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="EndAndExpand"></Button>
+                    <Button x:Name="btnAddImage" Clicked="btnAddImage_Clicked"  Text="Capture Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="CenterAndExpand"></Button>
+                    <Button x:Name="btnSelectImage" Clicked="btnSelectImage_Clicked" Text="Upload Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="EndAndExpand"></Button>
                 </Grid>
 
                 <!--Product Code-->
@@ -85,11 +86,11 @@
 
                     <Label Text="Quantity" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
 
-                    <Label Text="Piece" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
-                    <Entry x:Name="txtQuantityPiece" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
-
                     <Label Text="Pack" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
-                    <Entry x:Name="txtQuantityPack" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
+                    <Entry x:Name="txtQuantityPack" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
+                    
+                    <Label Text="Piece" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Entry x:Name="txtQuantityPiece" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
                 </Grid>
 
                 <!--Price-->
@@ -111,8 +112,8 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
 
-                    <Button x:Name="btnSave" Text="Save" Grid.Column="0" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
-                    <Button x:Name="btnBack" Text="Back" Grid.Column="1" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
+                    <Button x:Name="btnSave" Clicked="btnSave_Clicked" Text="Save" Grid.Column="0" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
+                    <Button x:Name="btnBack" Clicked="btnBack_Clicked" Text="Back" Grid.Column="1" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
                 </Grid>
             </Grid>
         </ScrollView>

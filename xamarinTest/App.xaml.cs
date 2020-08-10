@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using xamarinTestBL;
+using Xamarin.Essentials;
 
 namespace xamarinTest
 {
@@ -9,6 +10,7 @@ namespace xamarinTest
         {
             InitializeComponent();
 
+            // update
             if (views.database.databaseExists())
             {
 
