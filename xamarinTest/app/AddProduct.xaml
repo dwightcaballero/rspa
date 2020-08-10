@@ -4,12 +4,117 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="xamarinTest.AddProduct">
+             x:Class="xamarinTest.AddProduct"
+             NavigationPage.HasNavigationBar="False">
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <Grid RowSpacing="10" ColumnSpacing="0" Margin="20, 20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="2*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <!--Title-->
+                <Label Text="ADD PRODUCT" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource lblTitle}"></Label>
+                
+                <!--Image-->
+                <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Frame BorderColor="Black" Padding="5">
+                        <Image Aspect="AspectFill" Grid.Row="0" Grid.Column="0" BackgroundColor="LightGreen"></Image>
+                    </Frame>
+                    <Button x:Name="btnImage" Text="Select Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="EndAndExpand"></Button>
+                </Grid>
+
+                <!--Product Code-->
+                <Label Text="Product Code" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Entry x:Name="txtProductCode" Grid.Row="2" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+
+                <!--Product Name-->
+                <Label Text="Product Name" Grid.Row="3" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Entry x:Name="txtProductName" Grid.Row="3" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+
+                <!--Product Brand-->
+                <Label Text="Product Brand" Grid.Row="4" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Entry x:Name="txtProductBrand" Grid.Row="4" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+
+                <!--Variation-->
+                <Grid Grid.Row="5" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Variation" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                    <Entry x:Name="txtVariation" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                    <Picker x:Name="ddlVariation" Grid.Column="2" Style="{StaticResource pickerNormal}"></Picker>
+                </Grid>
+
+                <!--Quantity-->
+                <Grid Grid.Row="6" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Quantity" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+
+                    <Label Text="Piece" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Entry x:Name="txtQuantityPiece" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
+
+                    <Label Text="Pack" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Entry x:Name="txtQuantityPack" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
+                </Grid>
+
+                <!--Price-->
+                <Label Text="Price" Grid.Row="7" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Entry x:Name="txtPrice" Grid.Row="7" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+
+                <!--Store-->
+                <Label Text="Store" Grid.Row="8" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Entry x:Name="txtStore" Grid.Row="8" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+
+                <!--Category-->
+                <Label Text="Category" Grid.Row="9" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Picker x:Name="ddlCategory" Grid.Row="9" Grid.Column="1" Style="{StaticResource entryNormal}"></Picker>
+
+                <!--Action Buttons-->
+                <Grid Grid.Row="10" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Button x:Name="btnSave" Text="Save" Grid.Column="0" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
+                    <Button x:Name="btnBack" Text="Back" Grid.Column="1" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
+                </Grid>
+            </Grid>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

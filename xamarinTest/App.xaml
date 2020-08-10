@@ -7,7 +7,8 @@
              x:Class="xamarinTest.App">
     <Application.Resources>
         <ResourceDictionary>
-            <Style x:Key="lblNormal" TargetType="Label">
+            <!--Main Page-->
+            <Style x:Key="lblMain" TargetType="Label">
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="HorizontalTextAlignment" Value="Center"/>
@@ -18,8 +19,8 @@
                 <Setter Property="Padding" Value="0, 0"/>
                 <Setter Property="Margin" Value="0, 0"/>
             </Style>
-
-            <Style x:Key="btnBig" TargetType="Button">
+            
+            <Style x:Key="btnMain" TargetType="Button">
                 <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
                 <Setter Property="VerticalOptions" Value="FillAndExpand"/>
                 <Setter Property="FontSize" Value="Title"/>
@@ -29,6 +30,91 @@
                 <Setter Property="Padding" Value="0, 0"/>
                 <Setter Property="Margin" Value="0, 0"/>
             </Style>
+            
+            <!--Other Pages-->
+            <Style x:Key="lblTitle" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalTextAlignment" Value="Center"/>
+                <Setter Property="FontSize" Value="Title"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Padding" Value="0, 0"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+            
+            <Style x:Key="lblNormal" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="End"/>
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Padding" Value="0, 0"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+
+            <Style x:Key="lblSmall" TargetType="Label">
+                <Setter Property="HorizontalOptions" Value="StartAndExpand"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="End"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Padding" Value="0, 0"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+
+            <Style x:Key="entryNormal" TargetType="Entry">
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="End"/>
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="PlaceholderColor" Value="LightGreen"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+
+            <Style x:Key="entrySmall" TargetType="Entry">
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="HorizontalTextAlignment" Value="Start"/>
+                <Setter Property="VerticalTextAlignment" Value="End"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="PlaceholderColor" Value="LightGreen"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+
+            <Style x:Key="pickerNormal" TargetType="Picker">
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+
+            <Style x:Key="btnNormal" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="FontSize" Value="Large"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Padding" Value="50, 20"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+
+            <Style x:Key="btnSmall" TargetType="Button">
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
+                <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="FontAttributes" Value="Bold"/>
+                <Setter Property="Padding" Value="10, 10"/>
+                <Setter Property="Margin" Value="0, 0"/>
+            </Style>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
