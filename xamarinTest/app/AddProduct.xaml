@@ -47,11 +47,11 @@
                 </Grid>
 
                 <!--Product Code-->
-                <Label Text="Product Code" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Label x:Name="lblProductCode" Text="Product Code" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
                 <Entry x:Name="txtProductCode" Grid.Row="2" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Product Name-->
-                <Label Text="Product Name" Grid.Row="3" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Label x:Name="lblProductName" Text="Product Name" Grid.Row="3" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
                 <Entry x:Name="txtProductName" Grid.Row="3" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Product Brand-->
@@ -86,15 +86,15 @@
 
                     <Label Text="Quantity" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
 
-                    <Label Text="Pack" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Label x:Name="lblQuantityPack" Text="Pack" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
                     <Entry x:Name="txtQuantityPack" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
-                    
-                    <Label Text="Piece" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+
+                    <Label x:Name="lblQuantityPiece" Text="Piece" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
                     <Entry x:Name="txtQuantityPiece" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
                 </Grid>
 
                 <!--Price-->
-                <Label Text="Price" Grid.Row="7" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Label x:Name="lblPrice" Text="Price" Grid.Row="7" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
                 <Entry x:Name="txtPrice" Grid.Row="7" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Store-->
