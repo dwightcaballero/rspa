@@ -1,17 +1,21 @@
 ﻿using System;
-using System.IO;
 using System.Text;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Plugin.Media;
 using Plugin.Media.Abstractions;
+using xamarinTestBL;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace xamarinTest
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddProduct : ContentPage
+    public partial class AddProductGrocery : ContentPage
     {
-        public AddProduct()
+        public string imagePath;
+
+        public AddProductGrocery()
         {
             InitializeComponent();
         }
@@ -26,7 +30,7 @@ namespace xamarinTest
                 return;
             }
 
-            var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+            var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
             {
                 PhotoSize = PhotoSize.Medium,
                 CompressionQuality = 92,
@@ -38,7 +42,7 @@ namespace xamarinTest
             if (file == null)
                 return;
 
-            await DisplayAlert("File Location", file.Path, "OK");
+            imagePath = file.Path;
 
             imgProductImage.Source = ImageSource.FromStream(() =>
             {
@@ -66,7 +70,7 @@ namespace xamarinTest
             if (file == null)
                 return;
 
-            await DisplayAlert("File Location", file.Path, "OK");
+            imagePath = file.Path;
 
             imgProductImage.Source = ImageSource.FromStream(() =>
             {
@@ -79,7 +83,55 @@ namespace xamarinTest
         {
             if (noValidationErrors())
             {
+                var newProduct = new views.product();
+                var listCategories = new List<views.category>(); // get list from database
 
+                newProduct.id = Guid.NewGuid();
+                newProduct.productCode = txtProductCode.Text;
+                newProduct.productName = txtProductName.Text;
+                newProduct.productBrand = txtProductBrand.Text;
+                newProduct.productVariation = txtVariation.Text;
+                newProduct.productStore = txtStore.Text;
+
+                // category
+                var selectedCategory = listCategories.Where(cat => cat.categoryName == ddlCategory.SelectedItem.ToString()).FirstOrDefault();
+                if (selectedCategory != null)
+                    newProduct.categoryUID = selectedCategory.id;
+
+                // recompute price (by piece) if piece or pack is not 1
+                var price = Convert.ToDecimal(txtPrice.Text);
+
+                if (!string.IsNullOrWhiteSpace(txtQuantityPack.Text))
+                {
+                    var quantityPack = Convert.ToDecimal(txtQuantityPack.Text);
+
+                    decimal quantityPiece = 1;
+                    if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
+                        quantityPiece = Convert.ToDecimal(txtQuantityPiece.Text);
+
+                    if (quantityPack > 1)
+                    {
+                        price /= (quantityPack * quantityPiece);
+                    }
+                    else
+                    {
+                        if (quantityPiece > 1)
+                            price /= quantityPiece;
+                    }
+                }
+                else
+                {
+                    if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
+                    {
+                        var quantityPiece = Convert.ToDecimal(txtQuantityPiece.Text);
+                        if (quantityPiece > 1)
+                            price /= quantityPiece;
+                    } 
+                }
+
+                newProduct.productPrice = price;
+
+                // save
             }
         }
 
@@ -106,7 +158,7 @@ namespace xamarinTest
             // quantity (pack)
             if (!string.IsNullOrWhiteSpace(txtQuantityPack.Text))
             {
-                if (!int.TryParse(txtQuantityPack.Text, out _))
+                if (!decimal.TryParse(txtQuantityPack.Text, out _))
                 {
                     errorList.AppendLine("Quantity-Pack (" + txtQuantityPack.Text + ") should be numeric.");
                     lblQuantityPack.TextColor = Color.Red;
@@ -116,18 +168,14 @@ namespace xamarinTest
 
             // quantity (piece)
             lblQuantityPiece.TextColor = Color.Black;
-            if (string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
+            if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
             {
-                errorList.AppendLine("Quantity-Piece should not be blank.");
-                lblQuantityPiece.TextColor = Color.Red;
-            }
-            else
-            {
-                if (!int.TryParse(txtQuantityPiece.Text, out _))
+                if (!decimal.TryParse(txtQuantityPiece.Text, out _))
                 {
                     errorList.AppendLine("Quantity-Piece (" + txtQuantityPiece.Text + ") should be numeric.");
                     lblQuantityPiece.TextColor = Color.Red;
                 }
+                else lblQuantityPack.TextColor = Color.Black;
             }
 
             // price

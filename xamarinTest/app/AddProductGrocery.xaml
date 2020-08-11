@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="xamarinTest.AddProduct"
+             x:Class="xamarinTest.AddProductGrocery"
              NavigationPage.HasNavigationBar="False">
     
     <ContentPage.Content>
@@ -30,8 +30,8 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Title-->
-                <Label Text="ADD PRODUCT" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource lblTitle}"></Label>
-                
+                <Label Text="Add Product" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource lblTitle}"></Label>
+
                 <!--Image-->
                 <Grid Grid.Row="1" Grid.ColumnSpan="2">
                     <Grid.ColumnDefinitions>
@@ -59,18 +59,9 @@
                 <Entry x:Name="txtProductBrand" Grid.Row="4" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Variation-->
-                <Grid Grid.Row="5" Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                        <ColumnDefinition Width="2*"></ColumnDefinition>
-                        <ColumnDefinition Width="1*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Label Text="Variation" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
-                    <Entry x:Name="txtVariation" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
-                    <Picker x:Name="ddlVariation" Grid.Column="2" Style="{StaticResource pickerNormal}"></Picker>
-                </Grid>
-
+                <Label Text="Variation" Grid.Row="5" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Entry x:Name="txtVariation" Grid.Row="5" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                
                 <!--Quantity-->
                 <Grid Grid.Row="6" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
@@ -86,10 +77,10 @@
 
                     <Label Text="Quantity" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
 
-                    <Label x:Name="lblQuantityPack" Text="Pack" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Label x:Name="lblQuantityPack" Text="Pack" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
                     <Entry x:Name="txtQuantityPack" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
 
-                    <Label x:Name="lblQuantityPiece" Text="Piece" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Label x:Name="lblQuantityPiece" Text="Piece" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
                     <Entry x:Name="txtQuantityPiece" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
                 </Grid>
 
