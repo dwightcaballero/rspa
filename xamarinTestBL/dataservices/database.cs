@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SQLite;
+using System;
 using System.IO;
 
 namespace xamarinTestBL
@@ -30,6 +31,19 @@ namespace xamarinTestBL
             public static bool databaseExists()
             {
                 return File.Exists(DatabasePath);
+            }
+
+            // initialize the database
+            public static void initializeDatabase()
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(DatabasePath))
+                {
+                    // create tables
+                    conn.CreateTable<views.category>();
+                    conn.CreateTable<views.codeReference>();
+                    conn.CreateTable<views.priceHistory>();
+                    conn.CreateTable<views.product>();
+                }
             }
         }
     }

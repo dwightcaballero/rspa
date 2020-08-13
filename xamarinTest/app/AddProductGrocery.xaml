@@ -48,7 +48,7 @@
 
                 <!--Product Code-->
                 <Label x:Name="lblProductCode" Text="Product Code" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
-                <Entry x:Name="txtProductCode" Grid.Row="2" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                <Entry x:Name="txtProductCode" IsEnabled="False" Grid.Row="2" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Product Name-->
                 <Label x:Name="lblProductName" Text="Product Name" Grid.Row="3" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>

@@ -10,11 +10,12 @@ namespace xamarinTest
         {
             InitializeComponent();
 
-            // update
             if (views.database.databaseExists())
             {
-
+                // update
             }
+            else
+                entities.database.initializeDatabase();
 
             MainPage = new NavigationPage(new MainPage());
         }

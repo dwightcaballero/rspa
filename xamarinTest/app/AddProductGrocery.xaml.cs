@@ -13,11 +13,16 @@ namespace xamarinTest
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddProductGrocery : ContentPage
     {
+        public dto.productDTO productDTO;
         public string imagePath;
 
         public AddProductGrocery()
         {
             InitializeComponent();
+
+            productDTO = new dto.productDTO();
+            productDTO.codeReference = views.codeReference.getCodeReference();
+            //txtProductCode.Text = productDTO.codeReference.productCode;
         }
 
         private async void btnAddImage_Clicked(object sender, EventArgs e)
@@ -87,11 +92,11 @@ namespace xamarinTest
                 var listCategories = new List<views.category>(); // get list from database
 
                 newProduct.id = Guid.NewGuid();
-                newProduct.productCode = txtProductCode.Text;
-                newProduct.productName = txtProductName.Text;
-                newProduct.productBrand = txtProductBrand.Text;
-                newProduct.productVariation = txtVariation.Text;
-                newProduct.productStore = txtStore.Text;
+                newProduct.productCode = txtProductCode.Text.Trim();
+                newProduct.productName = txtProductName.Text.Trim();
+                newProduct.productBrand = txtProductBrand.Text.Trim();
+                newProduct.productVariation = txtVariation.Text.Trim();
+                newProduct.productStore = txtStore.Text.Trim();
 
                 // category
                 var selectedCategory = listCategories.Where(cat => cat.categoryName == ddlCategory.SelectedItem.ToString()).FirstOrDefault();
@@ -138,14 +143,6 @@ namespace xamarinTest
         private bool noValidationErrors()
         {
             var errorList = new StringBuilder();
-
-            // product code
-            if (string.IsNullOrWhiteSpace(txtProductCode.Text))
-            {
-                errorList.AppendLine("Product Code should not be blank.");
-                lblProductCode.TextColor = Color.Red;
-            }
-            else lblProductCode.TextColor = Color.Black;
 
             // product name
             if (string.IsNullOrWhiteSpace(txtProductName.Text))
