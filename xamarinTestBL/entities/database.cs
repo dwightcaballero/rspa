@@ -8,6 +8,11 @@
             {
                 dataservices.database.initializeDatabase();
             }
+
+            public static void resetDatabase()
+            {
+                dataservices.database.resetDatabase();
+            }
         }
     }
 }

@@ -26,7 +26,7 @@
                 <Setter Property="FontSize" Value="Title"/>
                 <Setter Property="TextColor" Value="Black"/>
                 <Setter Property="FontAttributes" Value="Bold"/>
-                <Setter Property="BackgroundColor" Value="LightGreen"/>
+                <Setter Property="BackgroundColor" Value="SkyBlue"/>
                 <Setter Property="Padding" Value="0, 0"/>
                 <Setter Property="Margin" Value="0, 0"/>
             </Style>
@@ -74,7 +74,7 @@
                 <Setter Property="VerticalTextAlignment" Value="End"/>
                 <Setter Property="FontSize" Value="Large"/>
                 <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="PlaceholderColor" Value="LightGreen"/>
+                <Setter Property="PlaceholderColor" Value="SkyBlue"/>
                 <Setter Property="Margin" Value="0, 0"/>
             </Style>
 
@@ -84,7 +84,7 @@
                 <Setter Property="VerticalTextAlignment" Value="End"/>
                 <Setter Property="FontSize" Value="Medium"/>
                 <Setter Property="TextColor" Value="Black"/>
-                <Setter Property="PlaceholderColor" Value="LightGreen"/>
+                <Setter Property="PlaceholderColor" Value="SkyBlue"/>
                 <Setter Property="Margin" Value="0, 0"/>
             </Style>
 

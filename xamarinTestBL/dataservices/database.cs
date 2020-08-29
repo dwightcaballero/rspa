@@ -45,6 +45,20 @@ namespace xamarinTestBL
                     conn.CreateTable<views.product>();
                 }
             }
+
+            public static void resetDatabase()
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(DatabasePath))
+                {
+                    // delete tables
+                    conn.DropTable<views.category>();
+                    conn.DropTable<views.codeReference>();
+                    conn.DropTable<views.priceHistory>();
+                    conn.DropTable<views.product>();
+                }
+
+                initializeDatabase();
+            }
         }
     }
 }

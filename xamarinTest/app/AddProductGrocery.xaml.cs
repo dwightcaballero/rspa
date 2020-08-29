@@ -21,8 +21,12 @@ namespace xamarinTest
             InitializeComponent();
 
             productDTO = new dto.productDTO();
-            productDTO.codeReference = views.codeReference.getCodeReference();
-            //txtProductCode.Text = productDTO.codeReference.productCode;
+            productDTO.codeReference = views.codeReference.getCodeReference((int)system.sysConst.codeReferenceType.Product);
+            productDTO.listCategories = views.category.getListCategory();
+
+            txtProductCode.Text = productDTO.codeReference.code_string;
+            var listCategoryNames = productDTO.listCategories.Select(cat => cat.categoryName).ToList();
+            ddlCategory.ItemsSource = listCategoryNames;
         }
 
         private async void btnAddImage_Clicked(object sender, EventArgs e)
@@ -89,19 +93,35 @@ namespace xamarinTest
             if (noValidationErrors())
             {
                 var newProduct = new views.product();
-                var listCategories = new List<views.category>(); // get list from database
 
                 newProduct.id = Guid.NewGuid();
-                newProduct.productCode = txtProductCode.Text.Trim();
-                newProduct.productName = txtProductName.Text.Trim();
-                newProduct.productBrand = txtProductBrand.Text.Trim();
-                newProduct.productVariation = txtVariation.Text.Trim();
-                newProduct.productStore = txtStore.Text.Trim();
+                newProduct.productCode = productDTO.codeReference.code_string;
+                newProduct.productName = system.sysTool.CleanString(txtProductName.Text).Trim().ToUpper();
+                newProduct.productImage = imagePath;
+                newProduct.createdDate = DateTime.Now;
+                newProduct.editedDate = DateTime.Now;
+
+                if (!string.IsNullOrEmpty(txtProductBrand.Text))
+                    newProduct.productBrand = system.sysTool.CleanString(txtProductBrand.Text).Trim().ToUpper();
+                else
+                    newProduct.productBrand = string.Empty;
+
+                if (!string.IsNullOrEmpty(txtVariation.Text))
+                    newProduct.productVariation = system.sysTool.CleanString(txtVariation.Text).Trim().ToUpper();
+                else
+                    newProduct.productVariation = string.Empty;
+
+                if (!string.IsNullOrEmpty(txtStore.Text))
+                    newProduct.productStore = system.sysTool.CleanString(txtStore.Text).Trim().ToUpper();
+                else
+                    newProduct.productStore = string.Empty;
 
                 // category
-                var selectedCategory = listCategories.Where(cat => cat.categoryName == ddlCategory.SelectedItem.ToString()).FirstOrDefault();
+                var selectedCategory = productDTO.listCategories.Where(cat => cat.categoryName == ddlCategory.SelectedItem.ToString()).FirstOrDefault();
                 if (selectedCategory != null)
                     newProduct.categoryUID = selectedCategory.id;
+                else
+                    newProduct.categoryUID = Guid.Empty;
 
                 // recompute price (by piece) if piece or pack is not 1
                 var price = Convert.ToDecimal(txtPrice.Text);
@@ -135,8 +155,14 @@ namespace xamarinTest
                 }
 
                 newProduct.productPrice = price;
+                newProduct.updateType = 1;
+                productDTO.product = newProduct;
 
                 // save
+                entities.product.saveProduct(productDTO.product);
+                entities.codeReference.updateCodeReference(productDTO.codeReference);
+                showMessage(true, "Successfully added a new product!");
+                Navigation.PopAsync();
             }
         }
 
@@ -184,7 +210,7 @@ namespace xamarinTest
             }
             else
             {
-                if (!int.TryParse(txtPrice.Text, out _))
+                if (!decimal.TryParse(txtPrice.Text, out _))
                 {
                     errorList.AppendLine("Price (" + txtQuantityPiece.Text + ") should be numeric.");
                     lblPrice.TextColor = Color.Red;

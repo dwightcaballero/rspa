@@ -8,34 +8,47 @@ namespace xamarinTestBL
     {
         public class codeReference
         {
-            public static views.codeReference getCodeReference()
+            public static views.codeReference getCodeReference(int type)
             {
                 string month = DateTime.Now.ToString("MM");
                 string year = DateTime.Now.ToString("yy");
 
-                var codeReference = new views.codeReference();
-                codeReference.month = month;
-                codeReference.year = year;
-
-                int? code;
+                views.codeReference codeReference = null;
                 using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
                 {
-                    string sql = "SELECT code FROM codeReference ORDER BY code DESC LIMIT 1;";
-                    code = conn.Query<int>(sql).FirstOrDefault();
+                    string sql = "SELECT * FROM codeReference WHERE month='" + month + "' AND year='" + year + "' AND type=" + type + ";";
+                    codeReference = conn.Query<views.codeReference>(sql).FirstOrDefault();
                 }
 
-                if (code == null)
+                if (codeReference == null)
                 {
-                    codeReference.productCode = month + year + "0000";
+                    codeReference = new views.codeReference();
+                    codeReference.id = Guid.NewGuid();
+                    codeReference.month = month;
+                    codeReference.year = year;
+                    codeReference.type = type;
                     codeReference.code = 0;
+                    codeReference.code_string = month + year + "0000";
                 }
                 else
                 {
-                    codeReference.productCode = month + year + code.ToString().PadLeft(4, '0');
-                    codeReference.code = code.Value;
+                    codeReference.code += 1;
+                    codeReference.code_string = month + year + type + codeReference.code.ToString().PadLeft(4, '0');
                 }
 
                 return codeReference;
+            }
+
+            public static void updateCodeReference(views.codeReference codeReference)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    if (codeReference.code == 0)
+                        conn.Insert(codeReference);
+                    else{
+                        conn.Update(codeReference);
+                    }
+                }
             }
         }
     }

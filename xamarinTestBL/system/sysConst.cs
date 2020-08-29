@@ -7,8 +7,14 @@
             public enum updateType
             {
                 Manual = 1,
-                Uplaod = 2,
+                Import = 2,
                 Photo = 3
+            }
+
+            public enum codeReferenceType
+            {
+                Product = 1,
+                Category = 2
             }
         }
     }

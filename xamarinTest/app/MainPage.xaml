@@ -18,7 +18,7 @@
 
             <Image Source="rspa_logo.png" Grid.Row="0"></Image>
             <Button x:Name="btnViewProduct" Text="View Products" Grid.Row="1" Style="{StaticResource btnMain}" Clicked="btnViewProduct_Clicked"></Button>
-            <Button x:Name="btnAddProduct" Text="Add Products" Grid.Row="2" Style="{StaticResource btnMain}" Clicked="btnAddProduct_Clicked"></Button>
+            <Button x:Name="btnAddProduct" Text="Add Product" Grid.Row="2" Style="{StaticResource btnMain}" Clicked="btnAddProduct_Clicked"></Button>
             <Button x:Name="btnViewCategory" Text="View categories" Grid.Row="3" Style="{StaticResource btnMain}" Clicked="btnViewCategory_Clicked"></Button>
             <Label x:Name="lblVersion" Grid.Row="4" Style="{StaticResource lblMain}"></Label>
         </Grid>

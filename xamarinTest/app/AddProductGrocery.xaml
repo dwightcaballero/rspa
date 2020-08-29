@@ -9,19 +9,19 @@
     
     <ContentPage.Content>
         <ScrollView>
-            <Grid RowSpacing="10" ColumnSpacing="0" Margin="20, 20">
+            <Grid RowSpacing="30" ColumnSpacing="0" Margin="20, 20" HeightRequest="1150">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="2*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
-                    <RowDefinition Height="1*"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="250"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -40,27 +40,27 @@
                     </Grid.ColumnDefinitions>
 
                     <Frame BorderColor="Black" Padding="5">
-                        <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Row="0" Grid.Column="0" BackgroundColor="LightGreen"></Image>
+                        <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Row="0" Grid.Column="0" BackgroundColor="SkyBlue"></Image>
                     </Frame>
                     <Button x:Name="btnAddImage" Clicked="btnAddImage_Clicked"  Text="Capture Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="CenterAndExpand"></Button>
                     <Button x:Name="btnSelectImage" Clicked="btnSelectImage_Clicked" Text="Upload Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="EndAndExpand"></Button>
                 </Grid>
 
                 <!--Product Code-->
-                <Label x:Name="lblProductCode" Text="Product Code" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+                <Label Text="Product Code" Grid.Row="2" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
                 <Entry x:Name="txtProductCode" IsEnabled="False" Grid.Row="2" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Product Name-->
                 <Label x:Name="lblProductName" Text="Product Name" Grid.Row="3" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
-                <Entry x:Name="txtProductName" Grid.Row="3" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                <Entry x:Name="txtProductName" Placeholder="Corned Beef" Grid.Row="3" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Product Brand-->
                 <Label Text="Product Brand" Grid.Row="4" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
-                <Entry x:Name="txtProductBrand" Grid.Row="4" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                <Entry x:Name="txtProductBrand" Placeholder="Holiday" Grid.Row="4" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Variation-->
                 <Label Text="Variation" Grid.Row="5" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
-                <Entry x:Name="txtVariation" Grid.Row="5" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                <Entry x:Name="txtVariation" Placeholder="250g" Grid.Row="5" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
                 
                 <!--Quantity-->
                 <Grid Grid.Row="6" Grid.ColumnSpan="2">
@@ -78,19 +78,19 @@
                     <Label Text="Quantity" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
 
                     <Label x:Name="lblQuantityPack" Text="Pack" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
-                    <Entry x:Name="txtQuantityPack" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
+                    <Entry x:Name="txtQuantityPack" Placeholder="1" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
 
                     <Label x:Name="lblQuantityPiece" Text="Piece" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
-                    <Entry x:Name="txtQuantityPiece" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
+                    <Entry x:Name="txtQuantityPiece" Placeholder="1" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}"></Entry>
                 </Grid>
 
                 <!--Price-->
                 <Label x:Name="lblPrice" Text="Price" Grid.Row="7" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
-                <Entry x:Name="txtPrice" Grid.Row="7" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                <Entry x:Name="txtPrice" Placeholder="28.75" Grid.Row="7" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Store-->
                 <Label Text="Store" Grid.Row="8" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
-                <Entry x:Name="txtStore" Grid.Row="8" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
+                <Entry x:Name="txtStore" Placeholder="NCCC" Grid.Row="8" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
                 <!--Category-->
                 <Label Text="Category" Grid.Row="9" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
