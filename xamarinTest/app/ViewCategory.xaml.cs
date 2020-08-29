@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xamarinTest.app;
 
 namespace xamarinTest
 {
@@ -15,6 +16,16 @@ namespace xamarinTest
         public ViewCategory()
         {
             InitializeComponent();
+        }
+
+        private void btnBack_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PopAsync();
+        }
+
+        private void btnAdd_Clicked(object sender, EventArgs e)
+        {
+            Navigation.PushAsync(new AddCategory());
         }
     }
 }

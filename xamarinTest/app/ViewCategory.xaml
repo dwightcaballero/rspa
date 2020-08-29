@@ -6,11 +6,23 @@
              mc:Ignorable="d"
              x:Class="xamarinTest.ViewCategory"
              NavigationPage.HasNavigationBar="False">
+
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid RowSpacing="30" ColumnSpacing="0" Margin="20, 20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!--Action Buttons-->
+            <Button x:Name="btnBack" Clicked="btnBack_Clicked" Text="Back" Grid.Row="0" Style="{StaticResource btnSmall}" HorizontalOptions="StartAndExpand"></Button>
+            <Button x:Name="btnAdd" Clicked="btnAdd_Clicked" Text="Add Category" Grid.Row="0" Style="{StaticResource btnSmall}" HorizontalOptions="EndAndExpand"></Button>
+
+            <!--Title-->
+            <Label Text="List of Categories" Grid.Row="1" Style="{StaticResource lblTitle}"></Label>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

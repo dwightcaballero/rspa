@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SQLite;
 
 namespace xamarinTestBL
@@ -14,6 +15,11 @@ namespace xamarinTestBL
             [NotNull] public int updateType { get; set; }
             public DateTime createdDate { get; set; }
             public DateTime editedDate { get; set; }
+
+            public static List<category> getListCategory()
+            {
+                return dataservices.category.getListCategory();
+            }
         }
     }
 }
