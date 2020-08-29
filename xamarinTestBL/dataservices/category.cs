@@ -21,11 +21,19 @@ namespace xamarinTestBL
                 var listCategories = new List<views.category>();
                 using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
                 {
-                    string sql = "SELECT * FROM category;";
+                    string sql = "SELECT * FROM category ORDER BY categoryName ASC;";
                     listCategories = conn.Query<views.category>(sql).ToList();
                 }
 
                 return listCategories;
+            }
+
+            public static void updateCategory(views.category category)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.Update(category);
+                }
             }
         }
     }

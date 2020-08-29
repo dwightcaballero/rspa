@@ -8,6 +8,11 @@
             {
                 dataservices.category.saveCategory(category);
             }
+
+            public static void updateCategory(views.category category)
+            {
+                dataservices.category.updateCategory(category);
+            }
         }
     }
 }

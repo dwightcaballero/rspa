@@ -10,11 +10,13 @@ namespace xamarinTestBL
         {
             public views.category category { get; set; }
             public views.codeReference codeReference { get; set; }
+            public List<views.category> listCategories { get; set; }
 
             public categoryDTO()
             {
                 category = new views.category();
                 codeReference = new views.codeReference();
+                listCategories = new List<views.category>();
             }
         }
     }

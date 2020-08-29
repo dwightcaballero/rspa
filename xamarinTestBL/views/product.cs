@@ -19,6 +19,9 @@ namespace xamarinTestBL
             [NotNull] public int updateType { get; set; }
             public DateTime createdDate { get; set; }
             public DateTime editedDate { get; set; }
+
+            [Ignore] public decimal productPrice_10 => Math.Ceiling(productPrice + (productPrice * Convert.ToDecimal(.10)));
+            [Ignore] public decimal productPrice_15 => Math.Ceiling(productPrice + (productPrice * Convert.ToDecimal(.15)));
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using xamarinTestBL;
@@ -17,14 +12,42 @@ namespace xamarinTest.app
     {
         public dto.categoryDTO categoryDTO;
         public string imagePath;
+        public bool isNewRecord;
 
-        public AddCategory()
+        public AddCategory(views.category category)
         {
             InitializeComponent();
-
             categoryDTO = new dto.categoryDTO();
-            categoryDTO.codeReference = views.codeReference.getCodeReference((int)system.sysConst.codeReferenceType.Category);
-            txtCategoryCode.Text = categoryDTO.codeReference.code_string;
+
+            if (category != null)
+            {
+                isNewRecord = false;
+                lblTitle.Text = "View Category";
+                categoryDTO.category = category;
+                imgProductImage.Source = category.categoryImage;
+                txtCategoryCode.Text = category.categoryCode;
+                txtCategoryName.Text = category.categoryName;
+                imagePath = category.categoryImage;
+
+                btnAddImage.IsVisible = false;
+                btnSelectImage.IsVisible = false;
+                txtCategoryName.IsEnabled = false;
+                btnEdit.IsVisible = true;
+                btnSave.IsVisible = false;
+            }
+            else
+            {
+                isNewRecord = true;
+                lblTitle.Text = "Add Category";
+                categoryDTO.codeReference = views.codeReference.getCodeReference((int)system.sysConst.codeReferenceType.Category);
+                txtCategoryCode.Text = categoryDTO.codeReference.code_string;
+
+                btnAddImage.IsVisible = true;
+                btnSelectImage.IsVisible = true;
+                txtCategoryName.IsEnabled = true;
+                btnEdit.IsVisible = false;
+                btnSave.IsVisible = true;
+            }
         }
 
         private async void btnAddImage_Clicked(object sender, EventArgs e)
@@ -90,21 +113,35 @@ namespace xamarinTest.app
         {
             if (noValidationErrors())
             {
-                var newCategory = new views.category();
-
-                newCategory.id = Guid.NewGuid();
-                newCategory.categoryCode = categoryDTO.codeReference.code_string;
-                newCategory.categoryName = system.sysTool.CleanString(txtCategoryName.Text).Trim().ToUpper();
-                newCategory.categoryImage = imagePath;
-                newCategory.createdDate = DateTime.Now;
-                newCategory.editedDate = DateTime.Now;
-                newCategory.updateType = 1;
-                categoryDTO.category = newCategory;
-
                 // save
-                entities.category.saveCategory(categoryDTO.category);
-                entities.codeReference.updateCodeReference(categoryDTO.codeReference);
-                showMessage(true, "Successfully added a new category!");
+                if (isNewRecord)
+                {
+                    var newCategory = new views.category();
+
+                    newCategory.id = Guid.NewGuid();
+                    newCategory.categoryCode = txtCategoryCode.Text;
+                    newCategory.categoryName = system.sysTool.CleanString(txtCategoryName.Text).Trim().ToUpper();
+                    newCategory.categoryImage = imagePath;
+                    newCategory.createdDate = DateTime.Now;
+                    newCategory.editedDate = DateTime.Now;
+                    newCategory.updateType = 1;
+                    categoryDTO.category = newCategory;
+
+                    entities.category.saveCategory(categoryDTO.category);
+                    entities.codeReference.updateCodeReference(categoryDTO.codeReference);
+
+                    showMessage(true, "Successfully added a new category (" + categoryDTO.category.categoryName + ") !");
+                }
+                else
+                {
+                    categoryDTO.category.categoryName = system.sysTool.CleanString(txtCategoryName.Text).Trim().ToUpper();
+                    categoryDTO.category.categoryImage = imagePath;
+                    categoryDTO.category.editedDate = DateTime.Now;
+                    entities.category.updateCategory(categoryDTO.category);
+
+                    showMessage(true, "Successfully updated a category (" + categoryDTO.category.categoryName + ") !");
+                }
+                
                 Navigation.PopAsync();
             }
         }
@@ -136,6 +173,16 @@ namespace xamarinTest.app
                 DisplayAlert("Success", message, "Close");
             else
                 DisplayAlert("Error", message, "Close");
+        }
+
+        private void btnEdit_Clicked(object sender, EventArgs e)
+        {
+            lblTitle.Text = "Edit Category";
+            btnAddImage.IsVisible = true;
+            btnSelectImage.IsVisible = true;
+            txtCategoryName.IsEnabled = true;
+            btnEdit.IsVisible = false;
+            btnSave.IsVisible = true;
         }
     }
 }
