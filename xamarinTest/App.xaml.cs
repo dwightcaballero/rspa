@@ -13,7 +13,6 @@ namespace xamarinTest
             if (views.database.databaseExists())
             {
                 // update
-                // entities.database.resetDatabase();
             }
             else
                 entities.database.initializeDatabase();

@@ -28,7 +28,7 @@ namespace xamarinTestBL
                     codeReference.year = year;
                     codeReference.type = type;
                     codeReference.code = 0;
-                    codeReference.code_string = month + year + "0000";
+                    codeReference.code_string = month + year + type + "0000";
                 }
                 else
                 {
