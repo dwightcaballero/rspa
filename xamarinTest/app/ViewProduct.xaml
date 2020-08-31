@@ -7,10 +7,81 @@
              x:Class="xamarinTest.ViewProduct"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid RowSpacing="0" ColumnSpacing="0" Margin="20, 20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+                <RowDefinition Height="12*"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0, 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <!--Title-->
+                <Label Text="List of Products" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+
+                <!--Search Product-->
+                <SearchBar Placeholder="Search" Grid.Column="1" TextColor="Black" FontSize="Medium" TextTransform="Uppercase" 
+                       TextChanged="SearchBar_TextChanged"></SearchBar>
+            </Grid>
+
+            <!--List of Products-->
+            <Grid ColumnSpacing="0" BackgroundColor="SkyBlue" Padding="5, 5" Grid.Row="1" Margin="0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Style="{StaticResource lblNormal}" Text="Image" HorizontalOptions="CenterAndExpand" />
+                <Label Grid.Column="1" Style="{StaticResource lblNormal}" Text="Name" HorizontalOptions="CenterAndExpand" />
+            </Grid>
+
+            <ListView x:Name="lvProducts" HasUnevenRows="True" Grid.Row="2" SeparatorColor="SkyBlue" Margin="0, 0, 0, 20">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid RowSpacing="10" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Product Image-->
+                                <Frame BorderColor="Black" Padding="2" Margin="0">
+                                    <Image Source="{Binding productImage}" Aspect="AspectFill" Grid.Column="0"
+                                             HeightRequest="100" WidthRequest="50" BackgroundColor="SkyBlue"></Image>
+                                </Frame>
+
+                                <!--Product Name-->
+                                <Label Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="CenterAndExpand">
+                                    <Label.FormattedText>
+                                        <FormattedString>
+                                            <Span Text="{Binding productBrand}"></Span>
+                                            <Span Text=" "></Span>
+                                            <Span Text="{Binding productName}"></Span>
+                                            <Span Text=" "></Span>
+                                            <Span Text="{Binding productVariation}"></Span>
+                                        </FormattedString>
+                                    </Label.FormattedText>
+                                </Label>
+
+                                <!--Action Button-->
+                                <Button Clicked="btnViewProduct_Clicked" CommandParameter="{Binding id}"  Text="View" Grid.Column="2" Style="{StaticResource btnVerySmall}"></Button>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <!--Action Button-->
+            <Button Clicked="btnAdd_Clicked" Text="Add Product" Grid.Row="3" Style="{StaticResource btnVerySmall}"></Button>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

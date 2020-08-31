@@ -8,6 +8,11 @@
             {
                 dataservices.product.saveProduct(product);
             }
+
+            public static void updateProduct(views.product product)
+            {
+                dataservices.product.updateProduct(product);
+            }
         }
     }
 }

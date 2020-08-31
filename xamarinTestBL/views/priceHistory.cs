@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using SQLite;
 
 namespace xamarinTestBL
@@ -13,6 +14,11 @@ namespace xamarinTestBL
             [NotNull] public decimal priceTo { get; set; }
             [NotNull] public int updateType { get; set; }
             [NotNull] public DateTime loggedDate { get; set; }
+
+            public static List<priceHistory> GetListPriceHistory(Guid productUID)
+            {
+                return new List<priceHistory>();
+            }
         }
     }
 }

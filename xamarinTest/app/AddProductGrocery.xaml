@@ -17,7 +17,7 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
@@ -30,7 +30,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Title-->
-                <Label Text="Add Product" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource lblTitle}"></Label>
+                <Label x:Name="lblTitle" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource lblTitle}"></Label>
 
                 <!--Image-->
                 <Grid Grid.Row="1" Grid.ColumnSpan="2">
@@ -40,10 +40,11 @@
                     </Grid.ColumnDefinitions>
 
                     <Frame BorderColor="Black" Padding="5">
-                        <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Row="0" Grid.Column="0" BackgroundColor="SkyBlue"></Image>
+                        <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Column="0" BackgroundColor="SkyBlue"></Image>
                     </Frame>
-                    <Button x:Name="btnAddImage" Clicked="btnAddImage_Clicked"  Text="Capture Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="CenterAndExpand"></Button>
-                    <Button x:Name="btnSelectImage" Clicked="btnSelectImage_Clicked" Text="Upload Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="EndAndExpand"></Button>
+                    <Button x:Name="btnRemoveImage" Clicked="btnRemoveImage_Clicked"  Text="Remove Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="Start"></Button>
+                    <Button x:Name="btnAddImage" Clicked="btnAddImage_Clicked"  Text="Capture Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="Center"></Button>
+                    <Button x:Name="btnSelectImage" Clicked="btnSelectImage_Clicked" Text="Upload Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="End"></Button>
                 </Grid>
 
                 <!--Product Code-->
@@ -61,9 +62,10 @@
                 <!--Variation-->
                 <Label Text="Variation" Grid.Row="5" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
                 <Entry x:Name="txtVariation" Placeholder="250g" Grid.Row="5" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
-                
+
+                <!-- ADD / EDIT PRICE -->
                 <!--Quantity-->
-                <Grid Grid.Row="6" Grid.ColumnSpan="2">
+                <Grid x:Name="gridAddEditPrice" Grid.Row="6" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="*"></RowDefinition>
@@ -88,6 +90,45 @@
                 <Label x:Name="lblPrice" Text="Price" Grid.Row="7" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
                 <Entry x:Name="txtPrice" Placeholder="28.75" Grid.Row="7" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
+                <!-- VIEW PRICE -->
+                <Grid x:Name="gridViewPrice" Grid.Row="6" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="1*"></ColumnDefinition>
+                        <ColumnDefinition Width="2*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Text="Price" Grid.Row="0" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
+
+                    <!--Original Price-->
+                    <Label Text="Original" Grid.Row="0" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Entry x:Name="txtOriginalPrice" Grid.Row="0" Grid.Column="2" Style="{StaticResource entrySmall}" IsEnabled="False"></Entry>
+
+                    <!--+10% Price-->
+                    <Label Text="+10%" Grid.Row="1" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Entry x:Name="txt10Price" Grid.Row="1" Grid.Column="2" Style="{StaticResource entrySmall}" IsEnabled="False"></Entry>
+
+                    <!--+15% Price-->
+                    <Label Text="+15%" Grid.Row="2" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="End"></Label>
+                    <Entry x:Name="txt15Price" Grid.Row="2" Grid.Column="2" Style="{StaticResource entrySmall}" IsEnabled="False"></Entry>
+
+                    <!--Price History Link-->
+                    <Label Text="View Price History" Grid.Row="3" Grid.Column="2" Style="{StaticResource lblSmall}"
+                        TextColor="Blue" TextDecorations="Underline">
+
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer x:Name="tapPriceHistory" Tapped="lnkPriceHistory_Tapped" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+
                 <!--Store-->
                 <Label Text="Store" Grid.Row="8" Grid.Column="0" Style="{StaticResource lblNormal}"></Label>
                 <Entry x:Name="txtStore" Placeholder="NCCC" Grid.Row="8" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
@@ -97,15 +138,8 @@
                 <Picker x:Name="ddlCategory" Grid.Row="9" Grid.Column="1" Style="{StaticResource entryNormal}"></Picker>
 
                 <!--Action Buttons-->
-                <Grid Grid.Row="10" Grid.ColumnSpan="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-
-                    <Button x:Name="btnSave" Clicked="btnSave_Clicked" Text="Save" Grid.Column="0" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
-                    <Button x:Name="btnBack" Clicked="btnBack_Clicked" Text="Back" Grid.Column="1" Style="{StaticResource btnNormal}" Padding="50, 20"></Button>
-                </Grid>
+                <Button x:Name="btnEdit" Clicked="btnEdit_Clicked" Text="Edit" Grid.Row="10" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
+                <Button x:Name="btnSave" Clicked="btnSave_Clicked" Text="Save" Grid.Row="10" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

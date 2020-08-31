@@ -7,6 +7,9 @@ using Plugin.Media.Abstractions;
 using xamarinTestBL;
 using System.Collections.Generic;
 using System.Linq;
+using xamarinTest.services;
+using xamarinTest.app;
+using Xamarin.Forms.Markup;
 
 namespace xamarinTest
 {
@@ -15,18 +18,39 @@ namespace xamarinTest
     {
         public dto.productDTO productDTO;
         public string imagePath;
+        public bool isNewRecord;
+        public event EventHandler<List<views.product>> updateProductList;
 
-        public AddProductGrocery()
+        public AddProductGrocery(Guid productUID)
         {
             InitializeComponent();
-
             productDTO = new dto.productDTO();
-            productDTO.codeReference = views.codeReference.getCodeReference((int)system.sysConst.codeReferenceType.Product);
-            productDTO.listCategories = views.category.getListCategory();
 
-            txtProductCode.Text = productDTO.codeReference.code_string;
+            productDTO.listCategories = views.category.getListCategoryForListview();
             var listCategoryNames = productDTO.listCategories.Select(cat => cat.categoryName).ToList();
             ddlCategory.ItemsSource = listCategoryNames;
+
+            if (productUID != Guid.Empty)
+            {
+                var product = views.product.getProductByID(productUID);
+                if (product != null)
+                {
+                    isNewRecord = false;
+                    productDTO.product = product;
+                    populatePage();
+                }
+                else showMessage(false, "Product Record not found!");
+
+                showControls("view");
+            }
+            else
+            {
+                isNewRecord = true;
+                productDTO.codeReference = views.codeReference.getCodeReference((int)system.sysConst.codeReferenceType.Product);
+                txtProductCode.Text = productDTO.codeReference.code_string;
+
+                showControls("add");
+            }
         }
 
         private async void btnAddImage_Clicked(object sender, EventArgs e)
@@ -58,6 +82,8 @@ namespace xamarinTest
                 var stream = file.GetStream();
                 return stream;
             });
+
+            btnRemoveImage.IsVisible = true;
         }
 
         private async void btnSelectImage_Clicked(object sender, EventArgs e)
@@ -86,12 +112,23 @@ namespace xamarinTest
                 var stream = file.GetStream();
                 return stream;
             });
+
+            btnRemoveImage.IsVisible = true;
+        }
+
+        private void btnRemoveImage_Clicked(object sender, EventArgs e)
+        {
+            DependencyService.Get<IRemoveFile>().RemoveFile(imagePath);
+            btnRemoveImage.IsVisible = false;
+            imagePath = string.Empty;
+            imgProductImage.Source = string.Empty;
         }
 
         private void btnSave_Clicked(object sender, EventArgs e)
         {
             if (noValidationErrors())
             {
+                // gather
                 var newProduct = new views.product();
 
                 newProduct.id = Guid.NewGuid();
@@ -117,20 +154,28 @@ namespace xamarinTest
                     newProduct.productStore = string.Empty;
 
                 // category
-                var selectedCategory = productDTO.listCategories.Where(cat => cat.categoryName == ddlCategory.SelectedItem.ToString()).FirstOrDefault();
-                if (selectedCategory != null)
-                    newProduct.categoryUID = selectedCategory.id;
-                else
-                    newProduct.categoryUID = Guid.Empty;
+                if (ddlCategory.SelectedItem != null)
+                {
+                    var selectedCategory = productDTO.listCategories.Where(cat => cat.categoryName == ddlCategory.SelectedItem.ToString()).FirstOrDefault();
+                    if (selectedCategory != null)
+                        newProduct.categoryUID = selectedCategory.id;
+                    else
+                        newProduct.categoryUID = Guid.Empty;
+                }
+                else newProduct.categoryUID = Guid.Empty;
 
                 // recompute price (by piece) if piece or pack is not 1
                 var price = Convert.ToDecimal(txtPrice.Text);
+                newProduct.productPrice_Initial = price;
+
+                decimal quantityPack = 1;
+                decimal quantityPiece = 1;
 
                 if (!string.IsNullOrWhiteSpace(txtQuantityPack.Text))
                 {
-                    var quantityPack = Convert.ToDecimal(txtQuantityPack.Text);
+                    quantityPack = Convert.ToDecimal(txtQuantityPack.Text);
 
-                    decimal quantityPiece = 1;
+                    quantityPiece = 1;
                     if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
                         quantityPiece = Convert.ToDecimal(txtQuantityPiece.Text);
 
@@ -148,20 +193,45 @@ namespace xamarinTest
                 {
                     if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
                     {
-                        var quantityPiece = Convert.ToDecimal(txtQuantityPiece.Text);
+                        quantityPiece = Convert.ToDecimal(txtQuantityPiece.Text);
                         if (quantityPiece > 1)
                             price /= quantityPiece;
-                    } 
+                    }
                 }
 
+                newProduct.productPack_Initial = quantityPack;
+                newProduct.productPiece_Initial = quantityPiece;
                 newProduct.productPrice = price;
                 newProduct.updateType = 1;
-                productDTO.product = newProduct;
 
-                // save
-                entities.product.saveProduct(productDTO.product);
-                entities.codeReference.updateCodeReference(productDTO.codeReference);
-                showMessage(true, "Successfully added a new product!");
+                if (isNewRecord)
+                {
+                    productDTO.product = newProduct;
+
+                    // save
+                    entities.product.saveProduct(productDTO.product);
+                    entities.codeReference.updateCodeReference(productDTO.codeReference);
+                    showMessage(true, "Successfully added a new product (" + productDTO.product.productName + ") !");
+                }
+                else
+                {
+                    productDTO.product.productName = newProduct.productName;
+                    productDTO.product.productImage = imagePath;
+                    productDTO.product.productBrand = newProduct.productBrand;
+                    productDTO.product.productVariation = newProduct.productVariation;
+                    productDTO.product.productStore = newProduct.productStore;
+                    productDTO.product.categoryUID = newProduct.categoryUID;
+                    productDTO.product.productPrice = newProduct.productPrice;
+                    productDTO.product.productPrice_Initial = newProduct.productPrice_Initial;
+                    productDTO.product.productPiece_Initial = newProduct.productPiece_Initial;
+                    productDTO.product.productPack_Initial = newProduct.productPack_Initial;
+                    productDTO.product.editedDate = DateTime.Now;
+
+                    entities.product.updateProduct(productDTO.product);
+                    showMessage(true, "Successfully updated a product (" + productDTO.product.productName + ") !");
+                }
+
+                updateProductList?.Invoke(this, views.product.getListProductsForListView());
                 Navigation.PopAsync();
             }
         }
@@ -228,9 +298,9 @@ namespace xamarinTest
             }
         }
 
-        private void btnBack_Clicked(object sender, EventArgs e)
+        private void btnEdit_Clicked(object sender, EventArgs e)
         {
-            Navigation.PopAsync();
+            showControls("edit");
         }
 
         private void showMessage(bool success, string message)
@@ -239,6 +309,127 @@ namespace xamarinTest
                 DisplayAlert("Success", message, "Close");
             else
                 DisplayAlert("Error", message, "Close");
+        }
+
+        private void showControls(string type)
+        {
+            switch (type)
+            {
+                case "add":
+                    lblTitle.Text = "Add Product";
+                    btnAddImage.IsVisible = true;
+                    btnSelectImage.IsVisible = true;
+                    btnEdit.IsVisible = false;
+                    btnSave.IsVisible = true;
+                    btnRemoveImage.IsVisible = false;
+
+                    txtProductName.IsEnabled = true;
+                    txtProductBrand.IsEnabled = true;
+                    txtVariation.IsEnabled = true;
+                    txtStore.IsEnabled = true;
+                    ddlCategory.IsEnabled = true;
+                    gridAddEditPrice.IsVisible = true;
+                    gridViewPrice.IsVisible = false;
+                    lblPrice.IsVisible = true;
+                    txtPrice.IsVisible = true;
+                    break;
+
+                case "view":
+                    lblTitle.Text = "View Product";
+                    btnAddImage.IsVisible = false;
+                    btnSelectImage.IsVisible = false;
+                    btnEdit.IsVisible = true;
+                    btnSave.IsVisible = false;
+                    btnRemoveImage.IsVisible = false;
+
+                    txtProductName.IsEnabled = false;
+                    txtProductBrand.IsEnabled = false;
+                    txtVariation.IsEnabled = false;
+                    txtStore.IsEnabled = false;
+                    ddlCategory.IsEnabled = false;
+                    gridAddEditPrice.IsVisible = false;
+                    gridViewPrice.IsVisible = true;
+                    lblPrice.IsVisible = false;
+                    txtPrice.IsVisible = false;
+                    break;
+
+                case "edit":
+                    lblTitle.Text = "Edit Product";
+                    btnAddImage.IsVisible = true;
+                    btnSelectImage.IsVisible = true;
+                    btnEdit.IsVisible = false;
+                    btnSave.IsVisible = true;
+                    if (!string.IsNullOrEmpty(imagePath)) btnRemoveImage.IsVisible = true;
+
+                    txtProductName.IsEnabled = true;
+                    txtProductBrand.IsEnabled = true;
+                    txtVariation.IsEnabled = true;
+                    txtStore.IsEnabled = true;
+                    ddlCategory.IsEnabled = true;
+                    gridAddEditPrice.IsVisible = true;
+                    gridViewPrice.IsVisible = false;
+                    lblPrice.IsVisible = true;
+                    txtPrice.IsVisible = true;
+                    break;
+            }
+        }
+
+        private void lnkPriceHistory_Tapped(object sender, EventArgs e)
+        {
+            var lblPriceHistory = (Label)sender;
+            var tap = (TapGestureRecognizer)lblPriceHistory.GestureRecognizers[0];
+            var productUID = Guid.Parse(tap.CommandParameter.ToString());
+            Navigation.PushAsync(new ViewPriceHistory(productUID));
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            // discard changes made during edit
+            if (btnSave.IsVisible)
+                discardChanges();
+            else
+                Navigation.PopAsync();
+
+            return true;
+        }
+
+        public async void discardChanges()
+        {
+            var discard = await DisplayAlert("Warning", "Discard all changes made?", "Yes", "No");
+            if (discard)
+            {
+                if (!isNewRecord)
+                {
+                    showControls("view");
+                    populatePage();
+                }
+                else await Navigation.PopAsync();
+            }
+        }
+
+        private void populatePage()
+        {
+            imgProductImage.Source = productDTO.product.productImage;
+            imagePath = productDTO.product.productImage;
+
+            txtProductCode.Text = productDTO.product.productCode;
+            txtProductName.Text = productDTO.product.productName;
+            txtProductBrand.Text = productDTO.product.productBrand;
+            txtVariation.Text = productDTO.product.productVariation;
+            txtStore.Text = productDTO.product.productStore;
+
+            var selectedCategory = productDTO.listCategories.Where(cat => cat.id == productDTO.product.categoryUID).FirstOrDefault();
+            if (selectedCategory != null) ddlCategory.SelectedItem = selectedCategory.categoryName;
+
+            txtQuantityPack.Text = productDTO.product.productPack_Initial.ToString();
+            txtQuantityPiece.Text = productDTO.product.productPiece_Initial.ToString();
+            txtPrice.Text = productDTO.product.productPrice_Initial.ToString("N2");
+
+            txtOriginalPrice.Text = productDTO.product.productPrice.ToString("N2");
+            txt10Price.Text = productDTO.product.productPrice_10.ToString("N2");
+            txt15Price.Text = productDTO.product.productPrice_15.ToString("N2");
+
+            tapPriceHistory.CommandParameter = productDTO.product.id.ToString();
         }
     }
 }

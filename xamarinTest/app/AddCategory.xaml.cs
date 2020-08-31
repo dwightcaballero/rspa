@@ -1,8 +1,10 @@
 ﻿using Plugin.Media;
 using Plugin.Media.Abstractions;
 using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using xamarinTest.services;
 using xamarinTestBL;
 
 namespace xamarinTest.app
@@ -13,40 +15,33 @@ namespace xamarinTest.app
         public dto.categoryDTO categoryDTO;
         public string imagePath;
         public bool isNewRecord;
+        public event EventHandler<List<views.category>> updateCategoryList;
 
-        public AddCategory(views.category category)
+        public AddCategory(Guid categoryUID)
         {
             InitializeComponent();
             categoryDTO = new dto.categoryDTO();
 
-            if (category != null)
+            if (categoryUID != Guid.Empty)
             {
-                isNewRecord = false;
-                lblTitle.Text = "View Category";
-                categoryDTO.category = category;
-                imgProductImage.Source = category.categoryImage;
-                txtCategoryCode.Text = category.categoryCode;
-                txtCategoryName.Text = category.categoryName;
-                imagePath = category.categoryImage;
+                var category = views.category.getCategoryByID(categoryUID);
+                if (category != null)
+                {
+                    isNewRecord = false;
+                    categoryDTO.category = category;
+                    populatePage();
+                }
+                else showMessage(false, "Category record not found!");
 
-                btnAddImage.IsVisible = false;
-                btnSelectImage.IsVisible = false;
-                txtCategoryName.IsEnabled = false;
-                btnEdit.IsVisible = true;
-                btnSave.IsVisible = false;
+                showControls("view");
             }
             else
             {
                 isNewRecord = true;
-                lblTitle.Text = "Add Category";
                 categoryDTO.codeReference = views.codeReference.getCodeReference((int)system.sysConst.codeReferenceType.Category);
                 txtCategoryCode.Text = categoryDTO.codeReference.code_string;
 
-                btnAddImage.IsVisible = true;
-                btnSelectImage.IsVisible = true;
-                txtCategoryName.IsEnabled = true;
-                btnEdit.IsVisible = false;
-                btnSave.IsVisible = true;
+                showControls("add");
             }
         }
 
@@ -79,6 +74,8 @@ namespace xamarinTest.app
                 var stream = file.GetStream();
                 return stream;
             });
+
+            btnRemoveImage.IsVisible = true;
         }
 
         private async void btnSelectImage_Clicked(object sender, EventArgs e)
@@ -107,24 +104,28 @@ namespace xamarinTest.app
                 var stream = file.GetStream();
                 return stream;
             });
+
+            btnRemoveImage.IsVisible = true;
         }
 
         private void btnSave_Clicked(object sender, EventArgs e)
         {
             if (noValidationErrors())
             {
+                //gather
+                var newCategory = new views.category();
+
+                newCategory.id = Guid.NewGuid();
+                newCategory.categoryCode = txtCategoryCode.Text;
+                newCategory.categoryName = system.sysTool.CleanString(txtCategoryName.Text).Trim().ToUpper();
+                newCategory.categoryImage = imagePath;
+                newCategory.createdDate = DateTime.Now;
+                newCategory.editedDate = DateTime.Now;
+                newCategory.updateType = 1;
+
                 // save
                 if (isNewRecord)
                 {
-                    var newCategory = new views.category();
-
-                    newCategory.id = Guid.NewGuid();
-                    newCategory.categoryCode = txtCategoryCode.Text;
-                    newCategory.categoryName = system.sysTool.CleanString(txtCategoryName.Text).Trim().ToUpper();
-                    newCategory.categoryImage = imagePath;
-                    newCategory.createdDate = DateTime.Now;
-                    newCategory.editedDate = DateTime.Now;
-                    newCategory.updateType = 1;
                     categoryDTO.category = newCategory;
 
                     entities.category.saveCategory(categoryDTO.category);
@@ -134,14 +135,15 @@ namespace xamarinTest.app
                 }
                 else
                 {
-                    categoryDTO.category.categoryName = system.sysTool.CleanString(txtCategoryName.Text).Trim().ToUpper();
+                    categoryDTO.category.categoryName = newCategory.categoryName;
                     categoryDTO.category.categoryImage = imagePath;
                     categoryDTO.category.editedDate = DateTime.Now;
                     entities.category.updateCategory(categoryDTO.category);
 
                     showMessage(true, "Successfully updated a category (" + categoryDTO.category.categoryName + ") !");
                 }
-                
+
+                updateCategoryList?.Invoke(this, views.category.getListCategoryForListview());
                 Navigation.PopAsync();
             }
         }
@@ -162,11 +164,6 @@ namespace xamarinTest.app
             } 
         }
 
-        private void btnBack_Clicked(object sender, EventArgs e)
-        {
-            Navigation.PopAsync();
-        }
-
         private void showMessage(bool success, string message)
         {
             if (success)
@@ -177,12 +174,82 @@ namespace xamarinTest.app
 
         private void btnEdit_Clicked(object sender, EventArgs e)
         {
-            lblTitle.Text = "Edit Category";
-            btnAddImage.IsVisible = true;
-            btnSelectImage.IsVisible = true;
-            txtCategoryName.IsEnabled = true;
-            btnEdit.IsVisible = false;
-            btnSave.IsVisible = true;
+            showControls("edit");
+        }
+
+        private void btnRemoveImage_Clicked(object sender, EventArgs e)
+        {
+            DependencyService.Get<IRemoveFile>().RemoveFile(imagePath);
+            btnRemoveImage.IsVisible = false;
+            imagePath = string.Empty;
+            imgProductImage.Source = string.Empty;
+        }
+
+        private void showControls(string type)
+        {
+            switch (type)
+            {
+                case "add":
+                    lblTitle.Text = "Add Category";
+                    btnAddImage.IsVisible = true;
+                    btnSelectImage.IsVisible = true;
+                    txtCategoryName.IsEnabled = true;
+                    btnEdit.IsVisible = false;
+                    btnSave.IsVisible = true;
+                    btnRemoveImage.IsVisible = false;
+                    break;
+                case "view":
+                    lblTitle.Text = "View Category";
+                    btnAddImage.IsVisible = false;
+                    btnSelectImage.IsVisible = false;
+                    txtCategoryName.IsEnabled = false;
+                    btnEdit.IsVisible = true;
+                    btnSave.IsVisible = false;
+                    btnRemoveImage.IsVisible = false;
+                    break;
+                case "edit":
+                    lblTitle.Text = "Edit Category";
+                    btnAddImage.IsVisible = true;
+                    btnSelectImage.IsVisible = true;
+                    txtCategoryName.IsEnabled = true;
+                    btnEdit.IsVisible = false;
+                    btnSave.IsVisible = true;
+                    if (!string.IsNullOrEmpty(imagePath)) btnRemoveImage.IsVisible = true;
+                    break;
+            }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            // discard changes made during edit
+            if (btnSave.IsVisible)
+                discardChanges();
+            else
+                Navigation.PopAsync();
+
+            return true;
+        }
+
+        public async void discardChanges()
+        {
+            var discard = await DisplayAlert("Warning", "Discard all changes made?", "Yes", "No");
+            if (discard)
+            {
+                if (!isNewRecord)
+                {
+                    populatePage();
+                    showControls("view");
+                }
+                else await Navigation.PopAsync();
+            }
+        }
+
+        private void populatePage()
+        {
+            imgProductImage.Source = categoryDTO.category.categoryImage;
+            txtCategoryCode.Text = categoryDTO.category.categoryCode;
+            txtCategoryName.Text = categoryDTO.category.categoryName;
+            imagePath = categoryDTO.category.categoryImage;
         }
     }
 }

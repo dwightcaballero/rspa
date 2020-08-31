@@ -21,13 +21,20 @@ namespace xamarinTest
             InitializeComponent();
 
             categoryDTO = new dto.categoryDTO();
-            categoryDTO.listCategories = views.category.getListCategory();
+            categoryDTO.listCategories = views.category.getListCategoryForListview();
             lvCategories.ItemsSource = categoryDTO.listCategories;
         }
 
         private void btnAdd_Clicked(object sender, EventArgs e)
         {
-            Navigation.PushAsync(new AddCategory(null));
+            var AddCategory = new AddCategory(Guid.Empty);
+            AddCategory.updateCategoryList += AddCategory_updateCategoryList;
+            Navigation.PushAsync(AddCategory);
+        }
+
+        private void AddCategory_updateCategoryList(object sender, List<views.category> e)
+        {
+            lvCategories.ItemsSource = e;
         }
 
         private void btnViewCategory_Clicked(object sender, EventArgs e)
@@ -36,7 +43,9 @@ namespace xamarinTest
             var category = categoryDTO.listCategories.Where(cat => cat.id == Guid.Parse(btn.CommandParameter.ToString())).FirstOrDefault();
             if (category != null)
             {
-                Navigation.PushAsync(new AddCategory(category));
+                var AddCategory = new AddCategory(category.id);
+                AddCategory.updateCategoryList += AddCategory_updateCategoryList;
+                Navigation.PushAsync(AddCategory);
             }
             else showMessage(false, "Category record not found!");
         }
@@ -44,7 +53,7 @@ namespace xamarinTest
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
             var sbar = (SearchBar)sender;
-            var newCategoryList = categoryDTO.listCategories.Where(cat => cat.categoryName.Contains(sbar.Text.ToUpper())).ToList();
+            var newCategoryList = categoryDTO.listCategories.Where(cat => cat.categoryName.Contains(sbar.Text.ToUpper().Trim())).ToList();
             lvCategories.ItemsSource = newCategoryList;
         }
 

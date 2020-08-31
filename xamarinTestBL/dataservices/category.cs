@@ -1,4 +1,5 @@
 ﻿using SQLite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,16 +17,28 @@ namespace xamarinTestBL
                 }
             }
 
-            public static List<views.category> getListCategory()
+            public static List<views.category> getListCategoryForListview()
             {
                 var listCategories = new List<views.category>();
                 using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
                 {
-                    string sql = "SELECT * FROM category ORDER BY categoryName ASC;";
+                    string sql = "SELECT id, categoryName, categoryImage FROM category ORDER BY categoryName ASC;";
                     listCategories = conn.Query<views.category>(sql).ToList();
                 }
 
                 return listCategories;
+            }
+
+            public static views.category getCategoryByID(Guid categoryUID)
+            {
+                views.category category = null;
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    string sql = "SELECT * FROM category WHERE id='" + categoryUID.ToString() + "';";
+                    category = conn.Query<views.category>(sql).FirstOrDefault();
+                }
+
+                return category;
             }
 
             public static void updateCategory(views.category category)

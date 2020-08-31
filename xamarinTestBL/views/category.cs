@@ -16,9 +16,14 @@ namespace xamarinTestBL
             public DateTime createdDate { get; set; }
             public DateTime editedDate { get; set; }
 
-            public static List<category> getListCategory()
+            public static List<category> getListCategoryForListview()
             {
-                return dataservices.category.getListCategory();
+                return dataservices.category.getListCategoryForListview();
+            }
+
+            public static category getCategoryByID(Guid categoryUID)
+            {
+                return dataservices.category.getCategoryByID(categoryUID);
             }
         }
     }

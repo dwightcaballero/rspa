@@ -30,10 +30,11 @@
                 </Grid.ColumnDefinitions>
 
                 <Frame BorderColor="Black" Padding="5">
-                    <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Row="0" Grid.Column="0" BackgroundColor="SkyBlue"></Image>
+                    <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Column="0" BackgroundColor="SkyBlue"></Image>
                 </Frame>
-                <Button x:Name="btnAddImage" Clicked="btnAddImage_Clicked"  Text="Capture Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="CenterAndExpand"></Button>
-                <Button x:Name="btnSelectImage" Clicked="btnSelectImage_Clicked" Text="Upload Image" Grid.Row="0" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="EndAndExpand"></Button>
+                <Button x:Name="btnRemoveImage" Clicked="btnRemoveImage_Clicked"  Text="Remove Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="Start"></Button>
+                <Button x:Name="btnAddImage" Clicked="btnAddImage_Clicked"  Text="Capture Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="Center"></Button>
+                <Button x:Name="btnSelectImage" Clicked="btnSelectImage_Clicked" Text="Upload Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="End"></Button>
             </Grid>
 
             <!--Category Code-->

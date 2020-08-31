@@ -48,7 +48,7 @@ namespace xamarinTest
 
         private async void btnAddProduct_Clicked(object sender, System.EventArgs e)
         {
-            await Navigation.PushAsync(new AddProductGrocery());
+            await Navigation.PushAsync(new AddProductGrocery(Guid.Empty));
         }
 
         private async void btnViewCategory_Clicked(object sender, System.EventArgs e)
