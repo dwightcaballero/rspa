@@ -45,7 +45,7 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid RowSpacing="10" ColumnSpacing="0">
+                            <Grid RowSpacing="10" ColumnSpacing="5">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"></ColumnDefinition>
                                     <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -59,7 +59,7 @@
                                 </Frame>
 
                                 <!--Product Name-->
-                                <Label Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="CenterAndExpand">
+                                <Label Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="Center">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{Binding productBrand}"></Span>

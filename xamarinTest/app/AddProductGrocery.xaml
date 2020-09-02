@@ -18,10 +18,10 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -138,8 +138,8 @@
                 <Picker x:Name="ddlCategory" Grid.Row="9" Grid.Column="1" Style="{StaticResource entryNormal}"></Picker>
 
                 <!--Action Buttons-->
-                <Button x:Name="btnEdit" Clicked="btnEdit_Clicked" Text="Edit" Grid.Row="10" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
-                <Button x:Name="btnSave" Clicked="btnSave_Clicked" Text="Save" Grid.Row="10" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
+                <Button x:Name="btnEdit" Clicked="btnEdit_Clicked" VerticalOptions="End" Margin="0, 10" Text="Edit" Grid.Row="10" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
+                <Button x:Name="btnSave" Clicked="btnSave_Clicked" VerticalOptions="End" Margin="0, 10" Text="Save" Grid.Row="10" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
             </Grid>
         </ScrollView>
     </ContentPage.Content>

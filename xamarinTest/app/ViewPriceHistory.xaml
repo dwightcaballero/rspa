@@ -1,12 +1,68 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="xamarinTest.app.ViewPriceHistory">
+             x:Class="xamarinTest.app.ViewPriceHistory"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:cv="clr-namespace:xamarinTest.converters">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <cv:cvDatetimeToShortDateString x:Key="cvDatetimeToShortDateString" />
+            <cv:cvDecimalToString x:Key="cvDecimalToString" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <Grid RowSpacing="0" ColumnSpacing="0" Margin="20, 20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="auto"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!--Title-->
+            <Label x:Name="lblTitleProduct" Grid.Row="0" Style="{StaticResource lblNormal}" HorizontalOptions="Center" Margin="0, 0"></Label>
+            <Label Text="Price History" Grid.Row="1" Style="{StaticResource lblNormal}" HorizontalOptions="Center" Margin="0, 0, 0, 10"></Label>
+
+            <!--List of Price History-->
+            <Grid ColumnSpacing="0" BackgroundColor="SkyBlue" Padding="5, 5" Grid.Row="2" Margin="0, 0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Column="0" Style="{StaticResource lblNormal}" Text="Date" HorizontalOptions="CenterAndExpand" />
+                <Label Grid.Column="1" Style="{StaticResource lblNormal}" Text="Store" HorizontalOptions="CenterAndExpand" />
+                <Label Grid.Column="2" Style="{StaticResource lblNormal}" Text="Price" HorizontalOptions="CenterAndExpand" />
+            </Grid>
+
+            <ListView x:Name="lvPriceHistory" HasUnevenRows="True" Grid.Row="3" SeparatorColor="SkyBlue" Margin="0, 0, 0, 20">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid RowSpacing="10" ColumnSpacing="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+
+                                <!--Date-->
+                                <Label Text="{Binding loggedDate, Converter={StaticResource cvDatetimeToShortDateString}}" Grid.Column="0" Style="{StaticResource lblSmall}" HorizontalOptions="Center" Padding="0, 10"></Label>
+                                
+                                <!--Store-->
+                                <Label Text="{Binding store}" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="Center"></Label>
+
+                                <!--Price-->
+                                <Label Text="{Binding price, Converter={StaticResource cvDecimalToString}}" Grid.Column="2" Style="{StaticResource lblSmall}" HorizontalOptions="Center"></Label>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

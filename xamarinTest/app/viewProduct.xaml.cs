@@ -57,6 +57,7 @@ namespace xamarinTest
 
         private void AddProductGrocery_updateProductList(object sender, List<views.product> e)
         {
+            productDTO.listProducts = e;
             lvProducts.ItemsSource = e;
         }
 

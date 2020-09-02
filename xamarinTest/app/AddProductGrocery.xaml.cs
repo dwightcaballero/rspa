@@ -204,13 +204,22 @@ namespace xamarinTest
                 newProduct.productPrice = price;
                 newProduct.updateType = 1;
 
+                var priceHistory = new views.priceHistory();
+                priceHistory.id = Guid.NewGuid();
+                priceHistory.price = newProduct.productPrice_Initial;
+                priceHistory.store = newProduct.productStore;
+                priceHistory.updateType = 1;
+                priceHistory.loggedDate = DateTime.Now;
+
                 if (isNewRecord)
                 {
                     productDTO.product = newProduct;
+                    priceHistory.productUID = newProduct.id;
 
                     // save
                     entities.product.saveProduct(productDTO.product);
                     entities.codeReference.updateCodeReference(productDTO.codeReference);
+                    entities.priceHistory.addPriceHistory(priceHistory);
                     showMessage(true, "Successfully added a new product (" + productDTO.product.productName + ") !");
                 }
                 else
@@ -226,8 +235,10 @@ namespace xamarinTest
                     productDTO.product.productPiece_Initial = newProduct.productPiece_Initial;
                     productDTO.product.productPack_Initial = newProduct.productPack_Initial;
                     productDTO.product.editedDate = DateTime.Now;
+                    priceHistory.productUID = productDTO.product.id;
 
                     entities.product.updateProduct(productDTO.product);
+                    entities.priceHistory.addPriceHistory(priceHistory);
                     showMessage(true, "Successfully updated a product (" + productDTO.product.productName + ") !");
                 }
 
@@ -425,9 +436,9 @@ namespace xamarinTest
             txtQuantityPiece.Text = productDTO.product.productPiece_Initial.ToString();
             txtPrice.Text = productDTO.product.productPrice_Initial.ToString("N2");
 
-            txtOriginalPrice.Text = productDTO.product.productPrice.ToString("N2");
-            txt10Price.Text = productDTO.product.productPrice_10.ToString("N2");
-            txt15Price.Text = productDTO.product.productPrice_15.ToString("N2");
+            txtOriginalPrice.Text = "P " + productDTO.product.productPrice.ToString("N2");
+            txt10Price.Text = "P " + productDTO.product.productPrice_10.ToString("N2");
+            txt15Price.Text = "P " + productDTO.product.productPrice_15.ToString("N2");
 
             tapPriceHistory.CommandParameter = productDTO.product.id.ToString();
         }
