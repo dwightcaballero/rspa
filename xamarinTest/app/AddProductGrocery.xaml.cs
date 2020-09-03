@@ -206,7 +206,7 @@ namespace xamarinTest
 
                 var priceHistory = new views.priceHistory();
                 priceHistory.id = Guid.NewGuid();
-                priceHistory.price = newProduct.productPrice_Initial;
+                priceHistory.price = newProduct.productPrice;
                 priceHistory.store = newProduct.productStore;
                 priceHistory.updateType = 1;
                 priceHistory.loggedDate = DateTime.Now;
@@ -425,9 +425,21 @@ namespace xamarinTest
 
             txtProductCode.Text = productDTO.product.productCode;
             txtProductName.Text = productDTO.product.productName;
-            txtProductBrand.Text = productDTO.product.productBrand;
-            txtVariation.Text = productDTO.product.productVariation;
-            txtStore.Text = productDTO.product.productStore;
+
+            if (!string.IsNullOrEmpty(productDTO.product.productBrand))
+                txtProductBrand.Text = productDTO.product.productBrand;
+            else
+                txtProductBrand.Placeholder = string.Empty;
+
+            if (!string.IsNullOrEmpty(productDTO.product.productVariation))
+                txtVariation.Text = productDTO.product.productVariation;
+            else
+                txtVariation.Placeholder = string.Empty;
+
+            if (!string.IsNullOrEmpty(productDTO.product.productStore))
+                txtStore.Text = productDTO.product.productStore;
+            else
+                txtStore.Placeholder = string.Empty;
 
             var selectedCategory = productDTO.listCategories.Where(cat => cat.id == productDTO.product.categoryUID).FirstOrDefault();
             if (selectedCategory != null) ddlCategory.SelectedItem = selectedCategory.categoryName;

@@ -34,6 +34,7 @@ namespace xamarinTest
 
         private void AddCategory_updateCategoryList(object sender, List<views.category> e)
         {
+            categoryDTO.listCategories = e;
             lvCategories.ItemsSource = e;
         }
 

@@ -8,7 +8,7 @@
              NavigationPage.HasNavigationBar="False">
 
     <ContentPage.Content>
-        <Grid RowSpacing="0" ColumnSpacing="0" Margin="20, 20">
+        <Grid RowSpacing="0" ColumnSpacing="0" Margin="10, 10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
@@ -31,7 +31,7 @@
             </Grid>
             
             <!--List of Categories-->
-            <Grid ColumnSpacing="0" BackgroundColor="SkyBlue" Padding="5, 5" Grid.Row="1" Margin="0, 0">
+            <Grid ColumnSpacing="0" BackgroundColor="SkyBlue" Padding="5, 5" Grid.Row="1" Margin="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"></ColumnDefinition>
                     <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -54,16 +54,16 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!--Category Image-->
-                                <Frame BorderColor="Black" Padding="2" Margin="0">
+                                <Frame BorderColor="SkyBlue" Padding="2" Margin="0, 2, 0 , 4">
                                     <Image Source="{Binding categoryImage}" Aspect="AspectFill" Grid.Column="0"
-                                             HeightRequest="100" WidthRequest="50" BackgroundColor="SkyBlue"></Image>
+                                             HeightRequest="100" WidthRequest="50" BackgroundColor="AliceBlue"></Image>
                                 </Frame>
 
                                 <!--Category Name-->
                                 <Label Text="{Binding categoryName}" Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="CenterAndExpand"></Label>
 
                                 <!--Action Button-->
-                                <Button Clicked="btnViewCategory_Clicked" CommandParameter="{Binding id}"  Text="View" Grid.Column="2" Style="{StaticResource btnVerySmall}"></Button>
+                                <Button Clicked="btnViewCategory_Clicked" CommandParameter="{Binding id}"  Text="View" Grid.Column="2" Style="{StaticResource btnVerySmall}" Margin="0, 0, 7, 0"></Button>
 
                             </Grid>
                         </ViewCell>

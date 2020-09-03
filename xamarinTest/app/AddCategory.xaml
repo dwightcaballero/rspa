@@ -5,7 +5,7 @@
              NavigationPage.HasNavigationBar="False">
     
     <ContentPage.Content>
-        <Grid RowSpacing="30" ColumnSpacing="0" Margin="20, 20">
+        <Grid RowSpacing="30" ColumnSpacing="0" Margin="10, 10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"></RowDefinition>
                 <RowDefinition Height="250"></RowDefinition>
@@ -29,8 +29,8 @@
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Frame BorderColor="Black" Padding="5">
-                    <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Column="0" BackgroundColor="SkyBlue"></Image>
+                <Frame BorderColor="SkyBlue" Padding="5">
+                    <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Column="0" BackgroundColor="AliceBlue"></Image>
                 </Frame>
                 <Button x:Name="btnRemoveImage" Clicked="btnRemoveImage_Clicked"  Text="Remove Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="Start"></Button>
                 <Button x:Name="btnAddImage" Clicked="btnAddImage_Clicked"  Text="Capture Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="Center"></Button>

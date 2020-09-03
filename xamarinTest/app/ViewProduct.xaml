@@ -7,7 +7,7 @@
              x:Class="xamarinTest.ViewProduct"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Content>
-        <Grid RowSpacing="0" ColumnSpacing="0" Margin="20, 20">
+        <Grid RowSpacing="0" ColumnSpacing="0" Margin="10, 10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
@@ -38,14 +38,14 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Grid.Column="0" Style="{StaticResource lblNormal}" Text="Image" HorizontalOptions="CenterAndExpand" />
-                <Label Grid.Column="1" Style="{StaticResource lblNormal}" Text="Name" HorizontalOptions="CenterAndExpand" />
+                <Label Grid.Column="1" Style="{StaticResource lblNormal}" Text="Name" HorizontalOptions="Start" Margin="10, 0, 0, 0" />
             </Grid>
 
             <ListView x:Name="lvProducts" HasUnevenRows="True" Grid.Row="2" SeparatorColor="SkyBlue" Margin="0, 0, 0, 20">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <Grid RowSpacing="10" ColumnSpacing="5">
+                            <Grid RowSpacing="10" ColumnSpacing="0">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="2*"></ColumnDefinition>
                                     <ColumnDefinition Width="3*"></ColumnDefinition>
@@ -53,13 +53,13 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!--Product Image-->
-                                <Frame BorderColor="Black" Padding="2" Margin="0">
+                                <Frame BorderColor="SkyBlue" Padding="2" Margin="0, 2, 0 , 4">
                                     <Image Source="{Binding productImage}" Aspect="AspectFill" Grid.Column="0"
-                                             HeightRequest="100" WidthRequest="50" BackgroundColor="SkyBlue"></Image>
+                                             HeightRequest="100" WidthRequest="50" BackgroundColor="AliceBlue"></Image>
                                 </Frame>
 
                                 <!--Product Name-->
-                                <Label Grid.Column="1" Style="{StaticResource lblSmall}" HorizontalOptions="Center">
+                                <Label Grid.Column="1" Style="{StaticResource lblSmall}" Margin="10, 0, 0, 0" HorizontalOptions="Start">
                                     <Label.FormattedText>
                                         <FormattedString>
                                             <Span Text="{Binding productBrand}"></Span>
@@ -72,7 +72,7 @@
                                 </Label>
 
                                 <!--Action Button-->
-                                <Button Clicked="btnViewProduct_Clicked" CommandParameter="{Binding id}"  Text="View" Grid.Column="2" Style="{StaticResource btnVerySmall}"></Button>
+                                <Button Clicked="btnViewProduct_Clicked" CommandParameter="{Binding id}" Text="View" Grid.Column="2" Style="{StaticResource btnVerySmall}" Margin="0, 0, 7, 0"></Button>
 
                             </Grid>
                         </ViewCell>
