@@ -16,7 +16,7 @@
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="3*"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <!--Title-->
@@ -29,7 +29,7 @@
                     <ColumnDefinition Width="1*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
 
-                <Frame BorderColor="SkyBlue" Padding="5">
+                <Frame BorderColor="Black" Padding="5">
                     <Image x:Name="imgProductImage" Aspect="AspectFill" Grid.Column="0" BackgroundColor="AliceBlue"></Image>
                 </Frame>
                 <Button x:Name="btnRemoveImage" Clicked="btnRemoveImage_Clicked"  Text="Remove Image" Grid.Column="1" Style="{StaticResource btnSmall}" VerticalOptions="Start"></Button>
@@ -46,8 +46,18 @@
             <Entry x:Name="txtCategoryName" Placeholder="Canned Goods" Grid.Row="3" Grid.Column="1" Style="{StaticResource entryNormal}"></Entry>
 
             <!--Action Buttons-->
-            <Button x:Name="btnEdit" Clicked="btnEdit_Clicked" VerticalOptions="End" Text="Edit" Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
             <Button x:Name="btnSave" Clicked="btnSave_Clicked" VerticalOptions="End" Text="Save" Grid.Row="4" Grid.ColumnSpan="2" Style="{StaticResource btnNormal}"></Button>
+
+            <Grid Grid.Row="4" Grid.ColumnSpan="2" VerticalOptions="End">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="btnEdit" Clicked="btnEdit_Clicked" Text="Edit" Grid.Column="0" Style="{StaticResource btnNormal}"></Button>
+                <Button x:Name="btnDelete" Clicked="btnDelete_Clicked" Text="Delete" Grid.Column="1" Style="{StaticResource btnNormal}" 
+                            BackgroundColor="Red" BorderColor="DarkRed" TextColor="White"></Button>
+            </Grid>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

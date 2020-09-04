@@ -13,6 +13,11 @@
             {
                 dataservices.category.updateCategory(category);
             }
+
+            public static void deleteCategory(views.category category)
+            {
+                dataservices.category.deleteCategory(category);
+            }
         }
     }
 }

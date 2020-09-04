@@ -108,6 +108,14 @@ namespace xamarinTest.app
             btnRemoveImage.IsVisible = true;
         }
 
+        private void btnRemoveImage_Clicked(object sender, EventArgs e)
+        {
+            DependencyService.Get<IRemoveFile>().RemoveFile(imagePath);
+            btnRemoveImage.IsVisible = false;
+            imagePath = string.Empty;
+            imgProductImage.Source = string.Empty;
+        }
+
         private void btnSave_Clicked(object sender, EventArgs e)
         {
             if (noValidationErrors())
@@ -177,12 +185,16 @@ namespace xamarinTest.app
             showControls("edit");
         }
 
-        private void btnRemoveImage_Clicked(object sender, EventArgs e)
+        private async void btnDelete_Clicked(object sender, EventArgs e)
         {
-            DependencyService.Get<IRemoveFile>().RemoveFile(imagePath);
-            btnRemoveImage.IsVisible = false;
-            imagePath = string.Empty;
-            imgProductImage.Source = string.Empty;
+            var discard = await DisplayAlert("Warning", "Are you sure you want to delete the category record (" + categoryDTO.category.categoryName + ")?", "Yes", "No");
+            if (discard)
+            {
+                entities.category.deleteCategory(categoryDTO.category);
+                updateCategoryList?.Invoke(this, views.category.getListCategoryForListview());
+                showMessage(true, "Category record (" + categoryDTO.category.categoryName + ") successfully removed!");
+                await Navigation.PopAsync();
+            }
         }
 
         private void showControls(string type)
@@ -195,6 +207,7 @@ namespace xamarinTest.app
                     btnSelectImage.IsVisible = true;
                     txtCategoryName.IsEnabled = true;
                     btnEdit.IsVisible = false;
+                    btnDelete.IsVisible = false;
                     btnSave.IsVisible = true;
                     btnRemoveImage.IsVisible = false;
                     break;
@@ -204,6 +217,7 @@ namespace xamarinTest.app
                     btnSelectImage.IsVisible = false;
                     txtCategoryName.IsEnabled = false;
                     btnEdit.IsVisible = true;
+                    btnDelete.IsVisible = true;
                     btnSave.IsVisible = false;
                     btnRemoveImage.IsVisible = false;
                     break;
@@ -213,6 +227,7 @@ namespace xamarinTest.app
                     btnSelectImage.IsVisible = true;
                     txtCategoryName.IsEnabled = true;
                     btnEdit.IsVisible = false;
+                    btnDelete.IsVisible = false;
                     btnSave.IsVisible = true;
                     if (!string.IsNullOrEmpty(imagePath)) btnRemoveImage.IsVisible = true;
                     break;

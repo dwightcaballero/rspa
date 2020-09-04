@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -14,25 +12,52 @@ namespace xamarinTest
     public partial class ViewProduct : ContentPage
     {
         dto.productDTO productDTO { get; set; }
+        Guid selectedCategoryUID { get; set; }
+        string searchText { get; set; }
 
         public ViewProduct()
         {
             InitializeComponent();
 
             productDTO = new dto.productDTO();
+            selectedCategoryUID = Guid.Empty;
+            searchText = string.Empty;
+
             productDTO.listProducts = views.product.getListProductsForListView();
             lvProducts.ItemsSource = productDTO.listProducts;
+
+            productDTO.listCategories = views.category.getListCategoryForListview();
+            var listCategoryNames = productDTO.listCategories.Select(cat => cat.categoryName).ToList();
+            listCategoryNames.Insert(0, "NONE");
+            ddlCategory.ItemsSource = listCategoryNames;
         }
 
         private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
         {
             var sbar = (SearchBar)sender;
-            var text = sbar.Text.ToUpper().Trim();
-            var newProductList = productDTO.listProducts.Where(prod => 
-                prod.productBrand.Contains(text) || 
-                prod.productName.Contains(text) ||
-                prod.productVariation.Contains(text)).ToList();
-            lvProducts.ItemsSource = newProductList;
+            searchText = sbar.Text.ToUpper().Trim();
+            searchAndFilterListview();
+        }
+
+        private void ddlCategory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var ddlCategory = (Picker)sender;
+
+            if (ddlCategory.SelectedIndex == 0)
+                ddlCategory.SelectedItem = null;
+
+            if (ddlCategory.SelectedItem != null)
+            {
+                var category = productDTO.listCategories.Where(cat => cat.categoryName == ddlCategory.SelectedItem.ToString()).FirstOrDefault();
+                if (category != null)
+                    selectedCategoryUID = category.id;
+                else
+                    showMessage(false, "Category record not found!");
+            }
+            else
+                selectedCategoryUID = Guid.Empty;
+
+            searchAndFilterListview();
         }
 
         private void btnViewProduct_Clicked(object sender, EventArgs e)
@@ -59,6 +84,7 @@ namespace xamarinTest
         {
             productDTO.listProducts = e;
             lvProducts.ItemsSource = e;
+            searchAndFilterListview();
         }
 
         private void showMessage(bool success, string message)
@@ -67,6 +93,21 @@ namespace xamarinTest
                 DisplayAlert("Success", message, "Close");
             else
                 DisplayAlert("Error", message, "Close");
+        }
+
+        void searchAndFilterListview()
+        {
+            var newProductList = new List<views.product>();
+
+            if (selectedCategoryUID != Guid.Empty)
+                newProductList = productDTO.listProducts.Where(prod => prod.categoryUID == selectedCategoryUID).ToList();
+            else 
+                newProductList = productDTO.listProducts;
+
+            if (!string.IsNullOrEmpty(searchText))
+                newProductList = newProductList.Where(prod => prod.productFullName.Contains(searchText)).ToList();
+
+            lvProducts.ItemsSource = newProductList;
         }
     }
 }

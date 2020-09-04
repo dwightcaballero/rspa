@@ -16,11 +16,20 @@ namespace xamarinTestBL
                     conn.Insert(product);
                 }
             }
+
             public static void updateProduct(views.product product)
             {
                 using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
                 {
                     conn.Update(product);
+                }
+            }
+
+            public static void deleteProduct(views.product product)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.Delete(product);
                 }
             }
 
@@ -41,7 +50,7 @@ namespace xamarinTestBL
                 var listProducts = new List<views.product>();
                 using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
                 {
-                    string sql = "SELECT id, productImage, productBrand, productName, productVariation FROM product ORDER BY productBrand, productName, productVariation ASC;";
+                    string sql = "SELECT id, productImage, productBrand, productName, productVariation, categoryUID FROM product ORDER BY productBrand, productName, productVariation ASC;";
                     listProducts = conn.Query<views.product>(sql).ToList();
                 }
 

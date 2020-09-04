@@ -17,6 +17,22 @@ namespace xamarinTestBL
                 }
             }
 
+            public static void updateCategory(views.category category)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.Update(category);
+                }
+            }
+
+            public static void deleteCategory(views.category category)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.Delete(category);
+                }
+            }
+
             public static List<views.category> getListCategoryForListview()
             {
                 var listCategories = new List<views.category>();
@@ -39,14 +55,6 @@ namespace xamarinTestBL
                 }
 
                 return category;
-            }
-
-            public static void updateCategory(views.category category)
-            {
-                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
-                {
-                    conn.Update(category);
-                }
             }
         }
     }

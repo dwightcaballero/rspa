@@ -13,6 +13,11 @@
             {
                 dataservices.product.updateProduct(product);
             }
+
+            public static void deleteProduct(views.product product)
+            {
+                dataservices.product.deleteProduct(product);
+            }
         }
     }
 }

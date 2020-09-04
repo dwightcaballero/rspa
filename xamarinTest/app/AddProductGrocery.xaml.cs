@@ -314,6 +314,18 @@ namespace xamarinTest
             showControls("edit");
         }
 
+        private async void btnDelete_Clicked(object sender, EventArgs e)
+        {
+            var discard = await DisplayAlert("Warning", "Are you sure you want to delete the product record (" + productDTO.product.productFullName + ")?", "Yes", "No");
+            if (discard)
+            {
+                entities.product.deleteProduct(productDTO.product);
+                updateProductList?.Invoke(this, views.product.getListProductsForListView());
+                showMessage(true, "Product record (" + productDTO.product.productFullName + ") successfully removed!");
+                await Navigation.PopAsync();
+            }
+        }
+
         private void showMessage(bool success, string message)
         {
             if (success)
@@ -331,6 +343,7 @@ namespace xamarinTest
                     btnAddImage.IsVisible = true;
                     btnSelectImage.IsVisible = true;
                     btnEdit.IsVisible = false;
+                    btnDelete.IsVisible = false;
                     btnSave.IsVisible = true;
                     btnRemoveImage.IsVisible = false;
 
@@ -350,6 +363,7 @@ namespace xamarinTest
                     btnAddImage.IsVisible = false;
                     btnSelectImage.IsVisible = false;
                     btnEdit.IsVisible = true;
+                    btnDelete.IsVisible = true;
                     btnSave.IsVisible = false;
                     btnRemoveImage.IsVisible = false;
 
@@ -369,6 +383,7 @@ namespace xamarinTest
                     btnAddImage.IsVisible = true;
                     btnSelectImage.IsVisible = true;
                     btnEdit.IsVisible = false;
+                    btnDelete.IsVisible = false;
                     btnSave.IsVisible = true;
                     if (!string.IsNullOrEmpty(imagePath)) btnRemoveImage.IsVisible = true;
 

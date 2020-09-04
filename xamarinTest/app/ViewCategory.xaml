@@ -27,7 +27,7 @@
 
                 <!--Search Category-->
                 <SearchBar Placeholder="Search" Grid.Column="1" TextColor="Black" FontSize="Medium" TextTransform="Uppercase" 
-                       TextChanged="SearchBar_TextChanged"></SearchBar>
+                       TextChanged="SearchBar_TextChanged" VerticalTextAlignment="End"></SearchBar>
             </Grid>
             
             <!--List of Categories-->
@@ -54,7 +54,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!--Category Image-->
-                                <Frame BorderColor="SkyBlue" Padding="2" Margin="0, 2, 0 , 4">
+                                <Frame BorderColor="Black" Padding="2" Margin="0, 2, 0 , 3">
                                     <Image Source="{Binding categoryImage}" Aspect="AspectFill" Grid.Column="0"
                                              HeightRequest="100" WidthRequest="50" BackgroundColor="AliceBlue"></Image>
                                 </Frame>

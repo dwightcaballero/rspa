@@ -28,6 +28,7 @@ namespace xamarinTestBL
 
             [Ignore] public decimal productPrice_10 => Math.Ceiling(productPrice + (productPrice * Convert.ToDecimal(.10)));
             [Ignore] public decimal productPrice_15 => Math.Ceiling(productPrice + (productPrice * Convert.ToDecimal(.15)));
+            [Ignore] public string productFullName => productBrand + " " + productName + " " + productVariation;
 
             public static product getProductByID(Guid productUID)
             {
