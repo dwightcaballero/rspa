@@ -65,6 +65,7 @@
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="services\RemoveFile.cs" />
+    <Compile Include="services\WriteFile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -93,6 +94,10 @@
     <AndroidResource Include="Resources\xml\file_paths.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\xamarinTestBL\xamarinTestBL.csproj">
+      <Project>{3ADC10F1-310E-4BF5-A8E0-73300CC75D61}</Project>
+      <Name>xamarinTestBL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\xamarinTest\xamarinTest.csproj">
       <Project>{5E521B1C-E7A3-474C-AD69-48F4353F37A1}</Project>
       <Name>xamarinTest</Name>

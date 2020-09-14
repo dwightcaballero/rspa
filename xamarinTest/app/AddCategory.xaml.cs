@@ -31,7 +31,11 @@ namespace xamarinTest.app
                     categoryDTO.category = category;
                     populatePage();
                 }
-                else showMessage(false, "Category record not found!");
+                else
+                {
+                    showMessage(false, "Category record not found in the database!");
+                    system.sysTool.flushLogToFile("Error", "Category - Category record not found in the database.");
+                }
 
                 showControls("view");
             }
@@ -52,6 +56,7 @@ namespace xamarinTest.app
             if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
             {
                 showMessage(false, "No camera available.");
+                system.sysTool.flushLogToFile("Error", "Category - No camera is available.");
                 return;
             }
 
@@ -85,6 +90,7 @@ namespace xamarinTest.app
             if (!CrossMedia.Current.IsPickPhotoSupported)
             {
                 showMessage(false, "Uploading of image is not available.");
+                system.sysTool.flushLogToFile("Error", "Category - Uploading of image is not available.");
                 return;
             }
 
@@ -125,7 +131,7 @@ namespace xamarinTest.app
 
                 newCategory.id = Guid.NewGuid();
                 newCategory.categoryCode = txtCategoryCode.Text;
-                newCategory.categoryName = system.sysTool.CleanString(txtCategoryName.Text).Trim().ToUpper();
+                newCategory.categoryName = txtCategoryName.Text.Trim().ToUpper();
                 newCategory.categoryImage = imagePath;
                 newCategory.createdDate = DateTime.Now;
                 newCategory.editedDate = DateTime.Now;
@@ -163,6 +169,7 @@ namespace xamarinTest.app
             {
                 lblCategoryName.TextColor = Color.Red;
                 showMessage(false, "Category Name should not be blank.");
+                system.sysTool.flushLogToFile("Error", "Category - Category Name should not be blank.");
                 return false;
             }
             else

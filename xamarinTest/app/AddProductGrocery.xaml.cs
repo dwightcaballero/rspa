@@ -133,23 +133,23 @@ namespace xamarinTest
 
                 newProduct.id = Guid.NewGuid();
                 newProduct.productCode = productDTO.codeReference.code_string;
-                newProduct.productName = system.sysTool.CleanString(txtProductName.Text).Trim().ToUpper();
+                newProduct.productName = txtProductName.Text.Trim().ToUpper();
                 newProduct.productImage = imagePath;
                 newProduct.createdDate = DateTime.Now;
                 newProduct.editedDate = DateTime.Now;
 
                 if (!string.IsNullOrEmpty(txtProductBrand.Text))
-                    newProduct.productBrand = system.sysTool.CleanString(txtProductBrand.Text).Trim().ToUpper();
+                    newProduct.productBrand = txtProductBrand.Text.Trim().ToUpper();
                 else
                     newProduct.productBrand = string.Empty;
 
                 if (!string.IsNullOrEmpty(txtVariation.Text))
-                    newProduct.productVariation = system.sysTool.CleanString(txtVariation.Text).Trim().ToUpper();
+                    newProduct.productVariation = txtVariation.Text.Trim().ToUpper();
                 else
                     newProduct.productVariation = string.Empty;
 
                 if (!string.IsNullOrEmpty(txtStore.Text))
-                    newProduct.productStore = system.sysTool.CleanString(txtStore.Text).Trim().ToUpper();
+                    newProduct.productStore = txtStore.Text.Trim().ToUpper();
                 else
                     newProduct.productStore = string.Empty;
 
