@@ -8,6 +8,11 @@
             {
                 return dataservices.database.databaseExists();
             }
+
+            public static string getDatabasePath()
+            {
+                return dataservices.database.DatabasePath;
+            }
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using System.IO;
 using xamarinTest.Droid.services;
-using xamarinTest.services;
+using xamarinTestBL.services;
 
 [assembly: Xamarin.Forms.Dependency(typeof(RemoveFile))]
 namespace xamarinTest.Droid.services
 {
     public class RemoveFile : IRemoveFile
     {
-        void IRemoveFile.RemoveFile(string source)
+        void IRemoveFile.RemoveFile(string filename)
         {
-            File.Delete(source);
+            string filepath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, filename);
+            File.Delete(filepath);
         }
     }
 }

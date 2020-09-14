@@ -45,6 +45,18 @@ namespace xamarinTestBL
                 return listCategories;
             }
 
+            public static List<views.category> getListCategoryForExport()
+            {
+                var listCategories = new List<views.category>();
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    string sql = "SELECT id, categoryName, categoryCode FROM category ORDER BY categoryName ASC;";
+                    listCategories = conn.Query<views.category>(sql).ToList();
+                }
+
+                return listCategories;
+            }
+
             public static views.category getCategoryByID(Guid categoryUID)
             {
                 views.category category = null;

@@ -116,7 +116,7 @@ namespace xamarinTest.app
 
         private void btnRemoveImage_Clicked(object sender, EventArgs e)
         {
-            DependencyService.Get<IRemoveFile>().RemoveFile(imagePath);
+            DependencyService.Get<IRemoveImage>().RemoveImage(imagePath);
             btnRemoveImage.IsVisible = false;
             imagePath = string.Empty;
             imgProductImage.Source = string.Empty;

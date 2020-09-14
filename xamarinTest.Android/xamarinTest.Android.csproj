@@ -64,7 +64,9 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="services\GetFile.cs" />
     <Compile Include="services\RemoveFile.cs" />
+    <Compile Include="services\RemoveImage.cs" />
     <Compile Include="services\WriteFile.cs" />
   </ItemGroup>
   <ItemGroup>

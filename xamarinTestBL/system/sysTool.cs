@@ -1,4 +1,5 @@
 ﻿using System;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using xamarinTestBL.services;
 
@@ -8,6 +9,8 @@ namespace xamarinTestBL
     {
         public class sysTool
         {
+            static string dateInfile = DateTime.Now.Year.ToString().Substring(2, 2) + DateTime.Now.Month.ToString().PadLeft(2, '0') + DateTime.Now.Day.ToString().PadLeft(2, '0') + "_";
+
             public static string readException(Exception ex)
             {
                 string msg = ex.Message;
@@ -15,9 +18,9 @@ namespace xamarinTestBL
                 return msg;
             }
 
-            public static void flushLogToFile(string filetype, string content)
+            public static void flushLogToFile(string logType, string content)
             {
-                string filename = "log" + filetype + DateTime.Now.Year.ToString().Substring(2, 2) + DateTime.Now.Month.ToString().PadLeft(2, '0') + DateTime.Now.Day.ToString().PadLeft(2, '0') + "_" + Environment.MachineName + ".txt";
+                string filename = dateInfile + "log" + logType + ".txt";
                 content = DateTime.Now.Date.ToShortDateString() + ", " + DateTime.Now.ToLongTimeString() + ", " + content;
 
                 var logger = DependencyService.Get<IWriteFile>();
@@ -26,8 +29,33 @@ namespace xamarinTestBL
 
             public static void writeToFile(string filename, string content)
             {
-                var logger = DependencyService.Get<IWriteFile>();
-                logger.WriteFile(filename, content);
+                filename = dateInfile + filename;
+                var baseFilename = filename.Split('.')[0];
+
+                var reader = DependencyService.Get<IGetFile>();
+                foreach (var file in System.IO.Directory.GetFiles(reader.GetDirectory()))
+                {
+                    if (file.Contains(baseFilename))
+                    {
+                        var remover = DependencyService.Get<IRemoveFile>();
+                        remover.RemoveFile(file);
+                    }
+                }
+
+                var writer = DependencyService.Get<IWriteFile>();
+                writer.WriteFile(filename, content);
+            }
+
+            public async static void shareFile(string filename)
+            {
+                filename = dateInfile + filename;
+                var reader = DependencyService.Get<IGetFile>();
+
+                await Share.RequestAsync(new ShareFileRequest
+                {
+                    Title = "Category List",
+                    File = new ShareFile(reader.GetFile(filename))
+                });
             }
         }
     }

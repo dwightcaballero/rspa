@@ -21,6 +21,11 @@ namespace xamarinTestBL
                 return dataservices.category.getListCategoryForListview();
             }
 
+            public static List<category> getListCategoryForExport()
+            {
+                return dataservices.category.getListCategoryForExport();
+            }
+
             public static category getCategoryByID(Guid categoryUID)
             {
                 return dataservices.category.getCategoryByID(categoryUID);
