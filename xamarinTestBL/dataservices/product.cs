@@ -56,6 +56,17 @@ namespace xamarinTestBL
 
                 return listProducts;
             }
+
+            public static List<views.product> getListProducts()
+            {
+                var listProducts = new List<views.product>();
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    listProducts = conn.Table<views.product>().ToList();
+                }
+
+                return listProducts;
+            }
         }
     }
 }

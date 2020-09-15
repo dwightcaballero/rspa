@@ -31,6 +31,7 @@ namespace xamarinTestBL
             {
                 filename = dateInfile + filename;
                 var baseFilename = filename.Split('.')[0];
+                baseFilename = baseFilename.Replace(dateInfile, "");
 
                 var reader = DependencyService.Get<IGetFile>();
                 foreach (var file in System.IO.Directory.GetFiles(reader.GetDirectory()))
@@ -46,14 +47,14 @@ namespace xamarinTestBL
                 writer.WriteFile(filename, content);
             }
 
-            public async static void shareFile(string filename)
+            public async static void shareFile(string title, string filename)
             {
                 filename = dateInfile + filename;
                 var reader = DependencyService.Get<IGetFile>();
 
                 await Share.RequestAsync(new ShareFileRequest
                 {
-                    Title = "Category List",
+                    Title = title,
                     File = new ShareFile(reader.GetFile(filename))
                 });
             }

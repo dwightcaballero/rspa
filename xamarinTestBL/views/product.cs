@@ -39,6 +39,11 @@ namespace xamarinTestBL
             {
                 return dataservices.product.getListProductsForListView();
             }
+
+            public static List<product> getListProducts()
+            {
+                return dataservices.product.getListProducts();
+            }
         }
     }
 }

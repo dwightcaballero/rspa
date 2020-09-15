@@ -2,6 +2,7 @@
 using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
 using System;
+using xamarinTestBL;
 
 namespace xamarinTest
 {
@@ -54,6 +55,15 @@ namespace xamarinTest
         private async void btnViewCategory_Clicked(object sender, System.EventArgs e)
         {
             await Navigation.PushAsync(new ViewCategory());
+        }
+
+        private async void btnMore_Clicked(object sender, EventArgs e)
+        {
+            var result = await DisplayActionSheet("More Options", "Close", null, "Export Data", "Import Data", "View Statistics");
+            if (result == "Export Data")
+            {
+                controllers.product.exportListProduct();
+            }
         }
     }
 }
