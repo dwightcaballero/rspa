@@ -3,6 +3,8 @@ using Xamarin.Forms.Xaml;
 using Xamarin.Essentials;
 using System;
 using xamarinTestBL;
+using Plugin.FilePicker.Abstractions;
+using Plugin.FilePicker;
 
 namespace xamarinTest
 {
@@ -60,9 +62,20 @@ namespace xamarinTest
         private async void btnMore_Clicked(object sender, EventArgs e)
         {
             var result = await DisplayActionSheet("More Options", "Close", null, "Export Data", "Import Data", "View Statistics");
+
             if (result == "Export Data")
-            {
                 controllers.product.exportListProduct();
+
+            else if (result == "Import Data")
+            {
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                if (fileData == null)
+                    return;
+
+                string contents = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
+                string filepath = fileData.FilePath;
+
+                controllers.product.importListProduct(filepath);
             }
         }
     }
