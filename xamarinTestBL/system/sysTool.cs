@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using xamarinTestBL.services;
@@ -10,6 +12,54 @@ namespace xamarinTestBL
         public class sysTool
         {
             static string dateInfile = DateTime.Now.Year.ToString().Substring(2, 2) + DateTime.Now.Month.ToString().PadLeft(2, '0') + DateTime.Now.Day.ToString().PadLeft(2, '0') + "_";
+
+            public static string buildOR(List<Guid> listIDs, string fieldName)
+            {
+                if (listIDs.Count == 0)
+                {
+                    return " 1=0";
+                }
+
+                StringBuilder sql = new StringBuilder();
+                foreach (Guid ID in listIDs)
+                {
+                    if (!string.IsNullOrEmpty(sql.ToString()))
+                    {
+                        sql.Append(" or ");
+                    }
+
+                    sql.Append(fieldName);
+                    sql.Append("='");
+                    sql.Append(ID.ToString());
+                    sql.Append("' ");
+                }
+
+                return sql.ToString();
+            }
+
+            public static string buildOR(List<string> listString, string fieldName)
+            {
+                if (listString.Count == 0)
+                {
+                    return " 1=0";
+                }
+
+                StringBuilder sql = new StringBuilder();
+                foreach (string ID in listString)
+                {
+                    if (!string.IsNullOrEmpty(sql.ToString()))
+                    {
+                        sql.Append(" or ");
+                    }
+
+                    sql.Append(fieldName);
+                    sql.Append("='");
+                    sql.Append(ID.ToString());
+                    sql.Append("' ");
+                }
+
+                return sql.ToString();
+            }
 
             public static string readException(Exception ex)
             {

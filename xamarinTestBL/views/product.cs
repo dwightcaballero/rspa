@@ -29,6 +29,7 @@ namespace xamarinTestBL
             [Ignore] public decimal productPrice_10 => Math.Ceiling(productPrice + (productPrice * Convert.ToDecimal(.10)));
             [Ignore] public decimal productPrice_15 => Math.Ceiling(productPrice + (productPrice * Convert.ToDecimal(.15)));
             [Ignore] public string productFullName => productBrand + " " + productName + " " + productVariation;
+            [Ignore] public string categoryCode { get; set; }
 
             public static product getProductByID(Guid productUID)
             {
@@ -43,6 +44,11 @@ namespace xamarinTestBL
             public static List<product> getListProducts()
             {
                 return dataservices.product.getListProducts();
+            }
+
+            public static List<product> getListProductByListProductCode(List<string> listProductCode)
+            {
+                return dataservices.product.getListProductByListProductCode(listProductCode);
             }
         }
     }

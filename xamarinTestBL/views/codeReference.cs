@@ -12,6 +12,7 @@ namespace xamarinTestBL
             [NotNull] public string year { get; set; }
             [NotNull] public int type { get; set; }
             [NotNull] public int code { get; set; }
+
             [Ignore] public string code_string { get; set; }
 
             public static codeReference getCodeReference(int type)

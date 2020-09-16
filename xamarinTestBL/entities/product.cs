@@ -1,4 +1,6 @@
-﻿namespace xamarinTestBL
+﻿using System.Collections.Generic;
+
+namespace xamarinTestBL
 {
     public partial class entities
     {
@@ -17,6 +19,16 @@
             public static void deleteProduct(views.product product)
             {
                 dataservices.product.deleteProduct(product);
+            }
+
+            public static void saveListProduct(List<views.product> lisProduct)
+            {
+                dataservices.product.saveListProduct(lisProduct);
+            }
+
+            public static void updateListProduct(List<views.product> lisProduct)
+            {
+                dataservices.product.updateListProduct(lisProduct);
             }
         }
     }

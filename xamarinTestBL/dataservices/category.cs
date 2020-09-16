@@ -68,6 +68,18 @@ namespace xamarinTestBL
                 return listCategory;
             }
 
+            public static List<views.category> getListCategoryByListCategoryCode(List<string> listCategoryCode)
+            {
+                var listCategory = new List<views.category>();
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    string sql = "SELECT * FROM category WHERE " + system.sysTool.buildOR(listCategoryCode, "categoryCode") + ";";
+                    listCategory = conn.Query<views.category>(sql).ToList();
+                }
+
+                return listCategory;
+            }
+
             public static views.category getCategoryByID(Guid categoryUID)
             {
                 views.category category = null;
@@ -78,6 +90,22 @@ namespace xamarinTestBL
                 }
 
                 return category;
+            }
+
+            public static void saveListCategory(List<views.category> listCategory)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.InsertAll(listCategory);
+                }
+            }
+
+            public static void updateListCategory(List<views.category> listCategory)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.UpdateAll(listCategory);
+                }
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace xamarinTestBL
+﻿using System.Collections.Generic;
+
+namespace xamarinTestBL
 {
     public partial class entities
     {
@@ -17,6 +19,16 @@
             public static void deleteCategory(views.category category)
             {
                 dataservices.category.deleteCategory(category);
+            }
+
+            public static void saveListCategory(List<views.category> listCategory)
+            {
+                dataservices.category.saveListCategory(listCategory);
+            }
+
+            public static void updateListCategory(List<views.category> listCategory)
+            {
+                dataservices.category.updateListCategory(listCategory);
             }
         }
     }

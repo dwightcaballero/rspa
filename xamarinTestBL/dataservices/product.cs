@@ -67,6 +67,34 @@ namespace xamarinTestBL
 
                 return listProducts;
             }
+
+            public static List<views.product> getListProductByListProductCode(List<string> listProductCode)
+            {
+                var listProduct = new List<views.product>();
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    string sql = "SELECT * FROM product WHERE " + system.sysTool.buildOR(listProductCode, "productCode") + ";";
+                    listProduct = conn.Query<views.product>(sql).ToList();
+                }
+
+                return listProduct;
+            }
+
+            public static void saveListProduct(List<views.product> listProduct)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.InsertAll(listProduct);
+                }
+            }
+
+            public static void updateListProduct(List<views.product> listProduct)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.UpdateAll(listProduct);
+                }
+            }
         }
     }
 }

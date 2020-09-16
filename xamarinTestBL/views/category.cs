@@ -16,6 +16,8 @@ namespace xamarinTestBL
             public DateTime createdDate { get; set; }
             public DateTime editedDate { get; set; }
 
+            [Ignore] public string categoryCode_import { get; set; }
+
             public static List<category> getListCategoryForListview()
             {
                 return dataservices.category.getListCategoryForListview();
@@ -29,6 +31,11 @@ namespace xamarinTestBL
             public static List<category> getListCategory()
             {
                 return dataservices.category.getListCategory();
+            }
+
+            public static List<category> getListCategoryByListCategoryCode(List<string> listCategoryCode)
+            {
+                return dataservices.category.getListCategoryByListCategoryCode(listCategoryCode);
             }
 
             public static category getCategoryByID(Guid categoryUID)

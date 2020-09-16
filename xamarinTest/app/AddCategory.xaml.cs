@@ -135,7 +135,7 @@ namespace xamarinTest.app
                 newCategory.categoryImage = imagePath;
                 newCategory.createdDate = DateTime.Now;
                 newCategory.editedDate = DateTime.Now;
-                newCategory.updateType = 1;
+                newCategory.updateType = (int)system.sysConst.updateType.Manual;
 
                 // save
                 if (isNewRecord)

@@ -202,19 +202,19 @@ namespace xamarinTest
                 newProduct.productPack_Initial = quantityPack;
                 newProduct.productPiece_Initial = quantityPiece;
                 newProduct.productPrice = price;
-                newProduct.updateType = 1;
+                newProduct.updateType = (int)system.sysConst.updateType.Manual;
 
                 var priceHistory = new views.priceHistory();
                 priceHistory.id = Guid.NewGuid();
+                priceHistory.productUID = newProduct.id;
                 priceHistory.price = newProduct.productPrice;
                 priceHistory.store = newProduct.productStore;
-                priceHistory.updateType = 1;
+                priceHistory.updateType = (int)system.sysConst.updateType.Manual;
                 priceHistory.loggedDate = DateTime.Now;
 
                 if (isNewRecord)
                 {
                     productDTO.product = newProduct;
-                    priceHistory.productUID = newProduct.id;
 
                     // save
                     entities.product.saveProduct(productDTO.product);

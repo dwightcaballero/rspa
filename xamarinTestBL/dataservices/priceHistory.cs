@@ -17,6 +17,14 @@ namespace xamarinTestBL
                 }
             }
 
+            public static void addListPriceHistory(List<views.priceHistory> listPriceHistory)
+            {
+                using (SQLiteConnection conn = new SQLiteConnection(database.DatabasePath))
+                {
+                    conn.InsertAll(listPriceHistory);
+                }
+            }
+
             public static List<views.priceHistory> GetListPriceHistoryForListview(Guid productUID)
             {
                 var listPriceHistory = new List<views.priceHistory>();
