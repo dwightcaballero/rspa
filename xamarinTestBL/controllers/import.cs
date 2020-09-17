@@ -8,34 +8,8 @@ namespace xamarinTestBL
 {
     public partial class controllers
     {
-        public class product
+        public class import
         {
-            public static void exportListProduct()
-            {
-                var listCategory = views.category.getListCategoryForExport();
-                var listProduct = views.product.getListProducts();
-                var sb = new StringBuilder();
-
-                sb.AppendLine("Category");
-                sb.AppendLine("Code,Name,Updated");
-                foreach (var category in listCategory)
-                    sb.AppendLine(category.categoryCode + "," + category.categoryName + ",");
-
-                sb.AppendLine("");
-                sb.AppendLine("Product");
-                sb.AppendLine("Code,Name,Brand,Variation,Qty Pack,Qty Piece,Price,Store,Category,Updated");
-                foreach (var prod in listProduct)
-                {
-                    var categoryCode = listCategory.Where(cat => cat.id == prod.categoryUID).Select(cat => cat.categoryCode).FirstOrDefault();
-                    sb.AppendLine(prod.productCode + "," + prod.productName + "," + prod.productBrand + "," + prod.productVariation + "," +
-                                  prod.productPack_Initial + "," + prod.productPiece_Initial + "," + prod.productPrice_Initial + "," +
-                                  prod.productStore + "," + categoryCode + ",");
-                }
-
-                system.sysTool.writeToFile("rspa_export.csv", sb.ToString());
-                system.sysTool.shareFile("Export RSPA Data", "rspa_export.csv");
-            }
-
             public static void importListProduct(string filepath)
             {
                 var listCategory = new List<views.category>();
@@ -163,7 +137,7 @@ namespace xamarinTestBL
                 foreach (var product in listProduct)
                 {
                     product.categoryUID = listCategory.Where(cat => cat.categoryCode_import == product.categoryCode).Select(cat => cat.id).FirstOrDefault();
-                    product.productPrice = product.productPrice_Initial /= (product.productPack_Initial * product.productPiece_Initial);
+                    product.productPrice = product.productPrice_Initial / (product.productPack_Initial * product.productPiece_Initial);
 
                     var priceHistory = new views.priceHistory();
                     priceHistory.id = Guid.NewGuid();
@@ -218,6 +192,108 @@ namespace xamarinTestBL
 
                 // Add Price History
                 if (listPricehistory.Count > 0) entities.priceHistory.addListPriceHistory(listPricehistory);
+            }
+
+            public static string csvChecker(string filepath)
+            {
+                var listErrors = new StringBuilder();
+
+                using (var reader = new StreamReader(filepath))
+                {
+                    var skipTwice = false; // skip title and header
+                    var skip = 0;
+                    string type = "";
+                    var row = 0;
+                    var listCategoryCodeInFile = new List<string>();
+
+                    while (!reader.EndOfStream)
+                    {
+                        var line = reader.ReadLine();
+                        var values = line.Split(',');
+                        row += 1;
+
+                        if (values[0] == "Category" || values[0] == "Product")
+                        {
+                            type = values[0];
+                            skipTwice = true;
+                            skip++;
+                            continue;
+                        }
+
+                        if (skipTwice && skip == 1)
+                        {
+                            skip++;
+                            continue;
+                        }
+
+                        if (skipTwice && skip == 2)
+                        {
+                            skipTwice = false;
+                            skip = 0;
+                        }
+
+                        if (string.IsNullOrEmpty(values[0]))
+                            continue;
+
+                        if (type == "Category")
+                        {
+                            listCategoryCodeInFile.Add(values[0]);
+
+                            if (!string.IsNullOrWhiteSpace(values[2]))
+                            {
+                                if (string.IsNullOrWhiteSpace(values[0]))
+                                    listErrors.AppendLine("Row " + row + ": Category code should not be blank!");
+
+                                if (string.IsNullOrWhiteSpace(values[1]))
+                                    listErrors.AppendLine("Row " + row + ": Category name should not be blank!");
+                            }
+                        }
+                        else if (type == "Product")
+                        {
+                            if (!string.IsNullOrWhiteSpace(values[9]))
+                            {
+                                if (string.IsNullOrWhiteSpace(values[1]))
+                                    listErrors.AppendLine("Row " + row + ": Product name should not be blank!");
+
+                                if (string.IsNullOrWhiteSpace(values[1]))
+                                    listErrors.AppendLine("Row " + row + ": Product name should not be blank!");
+
+                                if (string.IsNullOrWhiteSpace(values[4]))
+                                    listErrors.AppendLine("Row " + row + ": Quantity Pack should not be blank!");
+                                
+                                else if (!decimal.TryParse(values[4], out _))
+                                    listErrors.AppendLine("Row " + row + ": Quantity Pack (" + values[4] + ") should be numeric!");
+                                
+                                else if (Convert.ToDecimal(values[4]) < 0)
+                                    listErrors.AppendLine("Row " + row + ": Quantity Pack (" + values[4] + ") should be positive!");
+
+                                if (string.IsNullOrWhiteSpace(values[5]))
+                                    listErrors.AppendLine("Row " + row + ": Quantity Piece should not be blank!");
+
+                                else if (!decimal.TryParse(values[5], out _))
+                                    listErrors.AppendLine("Row " + row + ": Quantity Piece (" + values[5] + ") should be numeric!");
+
+                                else if (Convert.ToDecimal(values[5]) < 0)
+                                    listErrors.AppendLine("Row " + row + ": Quantity Piece (" + values[5] + ") should be positive!");
+
+                                if (string.IsNullOrWhiteSpace(values[6]))
+                                    listErrors.AppendLine("Row " + row + ": Price should not be blank!");
+
+                                else if (!decimal.TryParse(values[6], out _))
+                                    listErrors.AppendLine("Row " + row + ": Price (" + values[6] + ") should be numeric!");
+
+                                else if (Convert.ToDecimal(values[6]) < 0)
+                                    listErrors.AppendLine("Row " + row + ": Price (" + values[6] + ") should be positive!");
+
+                                var catCode = listCategoryCodeInFile.Where(cat => cat == values[8]).Select(cat => cat).FirstOrDefault();
+                                if (string.IsNullOrEmpty(catCode))
+                                    listErrors.AppendLine("Row " + row + ": Product Category (" + values[8] + ") does not match any category in List of Categories!");
+                            }
+                        }
+                    }
+                }
+
+                return listErrors.ToString();
             }
         }
     }

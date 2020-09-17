@@ -61,10 +61,10 @@ namespace xamarinTest
 
         private async void btnMore_Clicked(object sender, EventArgs e)
         {
-            var result = await DisplayActionSheet("More Options", "Close", null, "Export Data", "Import Data", "View Statistics");
+            var result = await DisplayActionSheet("More Options", "Close", null, "Export Data", "Import Data", "Import Checker", "View Statistics");
 
             if (result == "Export Data")
-                controllers.product.exportListProduct();
+                controllers.export.exportListProduct();
 
             else if (result == "Import Data")
             {
@@ -72,11 +72,30 @@ namespace xamarinTest
                 if (fileData == null)
                     return;
 
-                string contents = System.Text.Encoding.UTF8.GetString(fileData.DataArray);
-                string filepath = fileData.FilePath;
-
-                controllers.product.importListProduct(filepath);
+                controllers.import.importListProduct(fileData.FilePath);
+                showMessage(true, "Successfully saved the imported data.");
             }
+
+            else if (result == "Import Checker")
+            {
+                FileData fileData = await CrossFilePicker.Current.PickFile();
+                if (fileData == null)
+                    return;
+
+                var listErrors = controllers.import.csvChecker(fileData.FilePath);
+                if (string.IsNullOrEmpty(listErrors))
+                    showMessage(true, "No errors found in the file.");
+                else
+                    showMessage(false, listErrors);
+            }
+        }
+
+        private void showMessage(bool success, string message)
+        {
+            if (success)
+                DisplayAlert("Success", message, "Close");
+            else
+                DisplayAlert("Error", message, "Close");
         }
     }
 }

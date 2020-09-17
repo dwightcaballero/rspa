@@ -165,43 +165,10 @@ namespace xamarinTest
                 else newProduct.categoryUID = Guid.Empty;
 
                 // recompute price (by piece) if piece or pack is not 1
-                var price = Convert.ToDecimal(txtPrice.Text);
-                newProduct.productPrice_Initial = price;
-
-                decimal quantityPack = 1;
-                decimal quantityPiece = 1;
-
-                if (!string.IsNullOrWhiteSpace(txtQuantityPack.Text))
-                {
-                    quantityPack = Convert.ToDecimal(txtQuantityPack.Text);
-
-                    quantityPiece = 1;
-                    if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
-                        quantityPiece = Convert.ToDecimal(txtQuantityPiece.Text);
-
-                    if (quantityPack > 1)
-                    {
-                        price /= (quantityPack * quantityPiece);
-                    }
-                    else
-                    {
-                        if (quantityPiece > 1)
-                            price /= quantityPiece;
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
-                    {
-                        quantityPiece = Convert.ToDecimal(txtQuantityPiece.Text);
-                        if (quantityPiece > 1)
-                            price /= quantityPiece;
-                    }
-                }
-
-                newProduct.productPack_Initial = quantityPack;
-                newProduct.productPiece_Initial = quantityPiece;
-                newProduct.productPrice = price;
+                newProduct.productPrice_Initial = Convert.ToDecimal(txtPrice.Text);
+                newProduct.productPack_Initial = Convert.ToDecimal(txtQuantityPack.Text);
+                newProduct.productPiece_Initial = Convert.ToDecimal(txtQuantityPack.Text);
+                newProduct.productPrice = newProduct.productPrice_Initial / (newProduct.productPack_Initial * newProduct.productPiece_Initial);
                 newProduct.updateType = (int)system.sysConst.updateType.Manual;
 
                 var priceHistory = new views.priceHistory();
@@ -260,43 +227,58 @@ namespace xamarinTest
             else lblProductName.TextColor = Color.Black;
 
             // quantity (pack)
-            if (!string.IsNullOrWhiteSpace(txtQuantityPack.Text))
+            if (string.IsNullOrWhiteSpace(txtQuantityPack.Text))
             {
-                if (!decimal.TryParse(txtQuantityPack.Text, out _))
-                {
-                    errorList.AppendLine("Quantity-Pack (" + txtQuantityPack.Text + ") should be numeric.");
-                    lblQuantityPack.TextColor = Color.Red;
-                }
-                else lblQuantityPack.TextColor = Color.Black;
+                errorList.AppendLine("Quantity Pack should not be blank.");
+                lblQuantityPack.TextColor = Color.Red;
             }
+            else if (!decimal.TryParse(txtQuantityPack.Text, out _))
+            {
+                errorList.AppendLine("Quantity Pack (" + txtQuantityPack.Text + ") should be numeric.");
+                lblQuantityPack.TextColor = Color.Red;
+            }
+            else if (Convert.ToDecimal(txtQuantityPack.Text) < 0)
+            {
+                errorList.AppendLine("Quantity Pack (" + txtQuantityPack.Text + ") should be positive.");
+                lblQuantityPack.TextColor = Color.Red;
+            }
+            else lblQuantityPack.TextColor = Color.Black;
 
             // quantity (piece)
-            lblQuantityPiece.TextColor = Color.Black;
-            if (!string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
+            if (string.IsNullOrWhiteSpace(txtQuantityPiece.Text))
             {
-                if (!decimal.TryParse(txtQuantityPiece.Text, out _))
-                {
-                    errorList.AppendLine("Quantity-Piece (" + txtQuantityPiece.Text + ") should be numeric.");
-                    lblQuantityPiece.TextColor = Color.Red;
-                }
-                else lblQuantityPack.TextColor = Color.Black;
+                errorList.AppendLine("Quantity Piece should not be blank.");
+                lblQuantityPiece.TextColor = Color.Red;
             }
+            else if (!decimal.TryParse(txtQuantityPiece.Text, out _))
+            {
+                errorList.AppendLine("Quantity Piece (" + txtQuantityPiece.Text + ") should be numeric.");
+                lblQuantityPiece.TextColor = Color.Red;
+            }
+            else if (Convert.ToDecimal(txtQuantityPiece.Text) < 0)
+            {
+                errorList.AppendLine("Quantity Piece (" + txtQuantityPiece.Text + ") should be positive.");
+                lblQuantityPiece.TextColor = Color.Red;
+            }
+            else lblQuantityPiece.TextColor = Color.Black;
 
             // price
-            lblPrice.TextColor = Color.Black;
             if (string.IsNullOrWhiteSpace(txtPrice.Text))
             {
                 errorList.AppendLine("Price should not be blank.");
                 lblPrice.TextColor = Color.Red;
             }
-            else
+            else if (!decimal.TryParse(txtPrice.Text, out _))
             {
-                if (!decimal.TryParse(txtPrice.Text, out _))
-                {
-                    errorList.AppendLine("Price (" + txtQuantityPiece.Text + ") should be numeric.");
-                    lblPrice.TextColor = Color.Red;
-                }
+                errorList.AppendLine("Price (" + txtPrice.Text + ") should be numeric.");
+                lblPrice.TextColor = Color.Red;
             }
+            else if (Convert.ToDecimal(txtPrice.Text) < 0)
+            {
+                errorList.AppendLine("Price (" + txtPrice.Text + ") should be positive.");
+                lblPrice.TextColor = Color.Red;
+            }
+            else lblPrice.TextColor = Color.Black;
 
             if (string.IsNullOrEmpty(errorList.ToString()))
             {
