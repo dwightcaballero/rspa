@@ -5,12 +5,14 @@ using System.Linq;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using xamarinTestBL;
+using ZXing.Net.Mobile.Forms;
 
 namespace xamarinTest
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ViewProduct : ContentPage
     {
+        ZXingScannerPage scanPage;
         dto.productDTO productDTO { get; set; }
         Guid selectedCategoryUID { get; set; }
         string searchText { get; set; }
@@ -73,13 +75,6 @@ namespace xamarinTest
             else showMessage(false, "Product record not found!");
         }
 
-        private void btnAdd_Clicked(object sender, EventArgs e)
-        {
-            var AddProductGrocery = new AddProductGrocery(Guid.Empty);
-            AddProductGrocery.updateProductList += AddProductGrocery_updateProductList;
-            Navigation.PushAsync(AddProductGrocery);
-        }
-
         private void AddProductGrocery_updateProductList(object sender, List<views.product> e)
         {
             productDTO.listProducts = e;
@@ -108,6 +103,23 @@ namespace xamarinTest
                 newProductList = newProductList.Where(prod => prod.productFullName.Contains(searchText)).ToList();
 
             lvProducts.ItemsSource = newProductList;
+        }
+
+        private async void btnScanBarcode_Clicked(object sender, EventArgs e)
+        {
+            scanPage = new ZXingScannerPage();
+            scanPage.OnScanResult += (result) =>
+            {
+                scanPage.IsScanning = false;
+
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopModalAsync();
+                    await DisplayAlert("Scanned Barcode", result.Text, "OK");
+                });
+            };
+
+            await Navigation.PushModalAsync(scanPage);
         }
     }
 }

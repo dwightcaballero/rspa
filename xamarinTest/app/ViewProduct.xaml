@@ -76,7 +76,6 @@
 
                                 <!--Action Button-->
                                 <Button Clicked="btnViewProduct_Clicked" CommandParameter="{Binding id}" Text="View" Grid.Column="2" Style="{StaticResource btnVerySmall}" Margin="0, 0, 7, 0"></Button>
-
                             </Grid>
                         </ViewCell>
                     </DataTemplate>
@@ -84,7 +83,7 @@
             </ListView>
 
             <!--Action Button-->
-            <Button Clicked="btnAdd_Clicked" Text="Add Product" Grid.Row="4" Style="{StaticResource btnVerySmall}"></Button>
+            <Button Clicked="btnScanBarcode_Clicked" Text="Scan Barcode" Grid.Row="4" Style="{StaticResource btnVerySmall}"></Button>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
